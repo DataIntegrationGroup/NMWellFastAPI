@@ -43,9 +43,7 @@ def get_well_records(well_id: int, db: Session = Depends(get_db)):
 
 @router.get("/")
 def get_wells(f: str = None, db: Session = Depends(get_db)):
-    rows = db.query(wells.Well) \
-        .filter(wells.Well.API.is_not(None)) \
-        .limit(10).all()
+    rows = db.query(wells.Well).filter(wells.Well.API.is_not(None)).limit(10).all()
 
     def tofeature(w):
         return {
@@ -54,7 +52,6 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
                 "name": w.OBJECTID,
                 "well_id": w.OBJECTID,
                 "api": w.API,
-
             },
             "geometry": w.geometry,
         }
@@ -65,5 +62,6 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
         ret = rows
 
     return ret
+
 
 # ============= EOF =============================================

@@ -46,11 +46,11 @@ class Well(Base):
 
 
 class Records(Base):
-    __tablename__ = 'tbl_well_records'
+    __tablename__ = "tbl_well_records"
 
     RecrdSetID = Column(GUID, primary_key=True, index=True)
     # OBJECTID = Column(Integer, primary_key=True, index=True)
-    WellDataID = Column(GUID, ForeignKey('tbl_well_locations.WellDataID'))
+    WellDataID = Column(GUID, ForeignKey("tbl_well_locations.WellDataID"))
     ActionDate = Column(DateTime)
     WellName = Column(String(50))
     WellNumber = Column(String(50))
@@ -58,4 +58,6 @@ class Records(Base):
     # EnteredBy
     # EntryDate
     # Comments
+
+
 # ============= EOF =============================================
