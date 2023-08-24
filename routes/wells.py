@@ -35,11 +35,12 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
             "geometry": w.geometry,
         }
 
-    if f == 'geojson':
+    if f == "geojson":
         ret = {"type": "FeatureCollection", "features": [tofeature(w) for w in rows]}
     else:
         ret = rows
 
     return ret
+
 
 # ============= EOF =============================================

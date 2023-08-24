@@ -32,9 +32,7 @@ templates = Jinja2Templates(directory=str(Path(BASE_DIR, "templates")))
 
 @app.get("/mapboxtoken")
 def mapboxtoken():
-    return {
-        "token": os.environ.get('MAPBOX_TOKEN')
-    }
+    return {"token": os.environ.get("MAPBOX_TOKEN")}
 
 
 @app.get("/", response_class=HTMLResponse)
