@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===============================================================================
-from sqlalchemy import Column, Integer, Float
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER as GUID
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
 
 from database import Base
 
@@ -22,8 +24,14 @@ class Well(Base):
     __tablename__ = "tbl_well_locations"
 
     OBJECTID = Column(Integer, primary_key=True, index=True)
+    WellDataID = Column(GUID)
+
+    API = Column(String(12))
+
     Lat_dd83 = Column(Float)
     Long_dd83 = Column(Float)
+
+    records = relationship("Records", backref="well")
 
     @property
     def geometry(self):
@@ -37,4 +45,17 @@ class Well(Base):
         return {"coordinates": [lon, lat], "type": "Point"}
 
 
+class Records(Base):
+    __tablename__ = 'tbl_well_records'
+
+    RecrdSetID = Column(GUID, primary_key=True, index=True)
+    # OBJECTID = Column(Integer, primary_key=True, index=True)
+    WellDataID = Column(GUID, ForeignKey('tbl_well_locations.WellDataID'))
+    ActionDate = Column(DateTime)
+    WellName = Column(String(50))
+    WellNumber = Column(String(50))
+    API_suffix = Column(String(4))
+    # EnteredBy
+    # EntryDate
+    # Comments
 # ============= EOF =============================================

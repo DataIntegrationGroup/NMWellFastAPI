@@ -14,6 +14,7 @@
 # limitations under the License.
 # ===============================================================================
 from fastapi import APIRouter, Depends
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from models import wells
@@ -24,18 +25,36 @@ router = APIRouter(prefix="/api/v1/wells", tags=["wells"])
 
 @router.get("/{well_id}")
 def get_well(well_id: int, db: Session = Depends(get_db)):
-    return db.query(wells.Well).filter(wells.Well.OBJECTID == well_id).first()
+    well = db.query(wells.Well).filter(wells.Well.OBJECTID == well_id).first()
+
+    # rs = db.execute(text("""select * from tbl_well_locations as l
+    # join tbl_well_records as r on r.WellDataID=l.WellDataID
+    # where l.OBJECTID=:well_id"""),
+    #                 params={'well_id': well_id}
+    #                 )
+    return well
+
+
+@router.get("/{well_id}/records")
+def get_well_records(well_id: int, db: Session = Depends(get_db)):
+    well = db.query(wells.Well).filter(wells.Well.OBJECTID == well_id).first()
+    return well.records
 
 
 @router.get("/")
 def get_wells(f: str = None, db: Session = Depends(get_db)):
-    rows = db.query(wells.Well).all()
+    rows = db.query(wells.Well) \
+        .filter(wells.Well.API.is_not(None)) \
+        .limit(10).all()
 
     def tofeature(w):
         return {
             "type": "Feature",
             "properties": {
                 "name": w.OBJECTID,
+                "well_id": w.OBJECTID,
+                "api": w.API,
+
             },
             "geometry": w.geometry,
         }
@@ -46,6 +65,5 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
         ret = rows
 
     return ret
-
 
 # ============= EOF =============================================

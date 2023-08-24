@@ -1,8 +1,76 @@
 {% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <script>
+        function loadwindow(f) {
+
+            // do ajax call to get well info
+            var well_id = $("#well_id").text()
+            var url = "/api/v1/wells/" + well_id
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    console.log(data)
+                    $("#api").text(data.API)
+                }
+            })
+
+
+            // do ajax call to get well records
+            url = "/api/v1/wells/" + well_id + "/records"
+            $('#records').DataTable({"ajax": {"url": url, "dataSrc": ""},
+                "columns": [{'data': 'WellDataID'},
+                    {'data': 'WellName'},
+                    {'data': 'ActionDate'},
+                ]})
+
+        }
+        $(window).on("load", loadwindow)
+    </script>
+
+    <style>
+        table tr, td, th {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+    </style>
+
+{% endblock %}
+
 
 {% block content %}
 <H1>Well Detail View</H1>
-<H2>{{ well_id }}</H2>
+
+<div class="row">
+    <table class="display compact">
+        <tr>
+            <td>Well ID</td>
+            <td id="well_id">{{ well_id }}</td>
+        </tr>
+        <tr>
+            <td>API</td>
+            <td id="api"></td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="row">
+    <H3>Records</H3>
+    <table id="records" class="display compact">
+        <thead>
+        <tr>
+            <th>WellDataID</th>
+            <th>WellName</th>
+            <th>ActionDate</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
 
 
 {% endblock %}

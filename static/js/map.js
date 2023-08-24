@@ -61,7 +61,9 @@ function initMap(center, zoom, dataurl){
         // }
         //
         // const txt = '<b>'+description+'</b><br>Well Depth (ft): '+wd
-        const txt = '<b>'+e.features[0].properties.name+'</b>'
+        const txt = '<b>'+'OBJECTID: '+ e.features[0].properties.name+ '<br>'+
+            'API: '+ e.features[0].properties.api+ '</b>'
+
         popup.setLngLat(coordinates).setHTML(txt).addTo(map);
 
     });
