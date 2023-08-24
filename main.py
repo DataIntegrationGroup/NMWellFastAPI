@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(Path(BASE_DIR, "templates")))
 
 
-@app.get('/well/detail/{well_id}', response_class=HTMLResponse)
+@app.get("/well/detail/{well_id}", response_class=HTMLResponse)
 def well_detail(request: Request, well_id: int):
     return templates.TemplateResponse(
         "well_detail_view.html",
@@ -47,6 +47,7 @@ def well_detail(request: Request, well_id: int):
 @app.get("/mapboxtoken")
 def mapboxtoken():
     return {"token": os.environ.get("MAPBOX_TOKEN")}
+
 
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
