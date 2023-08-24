@@ -22,6 +22,11 @@ from dependencies import get_db
 router = APIRouter(prefix="/api/v1/wells", tags=["wells"])
 
 
+@router.get("/{well_id}")
+def get_well(well_id: int, db: Session = Depends(get_db)):
+    return db.query(wells.Well).filter(wells.Well.OBJECTID == well_id).first()
+
+
 @router.get("/")
 def get_wells(f: str = None, db: Session = Depends(get_db)):
     rows = db.query(wells.Well).all()

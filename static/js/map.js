@@ -72,7 +72,7 @@ function initMap(center, zoom, dataurl){
     });
     map.on('click', 'wells', (e) => {
         const pointid = e.features[0].properties.name
-        window.open('/locations/view/' + pointid, '_blank')
+        window.open('/well/detail/' + pointid, '_blank')
     });
     map.on('style.load',  (s) => {
         console.log('style loaded', s)
