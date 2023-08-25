@@ -119,4 +119,5 @@ def get_well_logdata(well_id: int, db: Session = Depends(get_db)):
 def get_well_lithstrat(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("lithstrat", well_id, db)
 
+
 # ============= EOF =============================================
