@@ -167,6 +167,45 @@ class Location(Base):
         return {"coordinates": [lon, lat], "type": "Point"}
 
 
+class LogData(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_LogData"
+    LogClass = Column(String(24))
+    LogType = Column(String(8))
+    LogTitle = Column(String(255))
+    LogDate = Column(DateTime)
+    FromDepth = Column(Float)
+    ToDepth = Column(Float)
+    Hotlink = Column(String(255))
+    FileNo = Column(Integer)
+    FileLoc = Column(String(255))
+    Int_Notes = Column(String(255))
+
+
+class LthStrat(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_LthStrat"
+    LithClass = Column(String(50))
+    UnitBasis = Column(String(16))
+    UnitName = Column(String(128))
+    GeoID = Column(String(16))
+    WithinUnit = Column(String(16))
+    Top_Qual = Column(String(3))
+    Depth2Top = Column(Float)
+    Top_TVD = Column(Float)
+    Elev_Top = Column(Float)
+    Botm_Qual = Column(String(3))
+    Depth2Botm = Column(Float)
+    Bottom_TVD = Column(Float)
+    Elev_Bot = Column(Float)
+    DpthMethod = Column(String(16))
+    PickConfid = Column(String(16))
+    Absent = Column(Integer)
+    Overturned = Column(Integer)
+    Duplicated = Column(Integer)
+    Exclude = Column(Integer)
+    CheckPick = Column(Integer)
+    Int_Notes = Column(String(255))
+
+
 class Header(Base):
     __tablename__ = "Well_Header"
 
@@ -195,6 +234,6 @@ class Records(Base):
     history = relationship("History", backref="records")
     liner = relationship("Liner", backref="records")
     lithlog = relationship("LithLog", backref="records")
-
-
+    logdata = relationship("LogData", backref="records")
+    lithstrat = relationship("LthStrat", backref="records")
 # ============= EOF =============================================
