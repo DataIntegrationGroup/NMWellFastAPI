@@ -56,7 +56,10 @@ def get_well_db(well_id, db):
 
 def get_recordset_assoc(attr, well_id, db):
     well = get_well_db(well_id, db)
-    return [getattr(r, attr) for r in well.records]
+    rs = [getattr(r, attr) for r in well.records]
+
+    # flatten the list
+    return [rii for ri in rs for rii in ri]
 
 
 @router.get("/{well_id}")
@@ -107,9 +110,13 @@ def get_well_lithlog(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("lithlog", well_id, db)
 
 
+@router.get("/{well_id}/logdata")
+def get_well_logdata(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("logdata", well_id, db)
+
+
 @router.get("/{well_id}/lithstrat")
 def get_well_lithstrat(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("lithstrat", well_id, db)
-
 
 # ============= EOF =============================================

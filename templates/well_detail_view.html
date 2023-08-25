@@ -4,9 +4,10 @@
     <script>
         function loadwindow(f) {
 
+            console.log('asdfasdf')
             // do ajax call to get well info
-            var well_id = $("#well_id").text()
-            var url = "/api/v1/wells/" + well_id
+
+            var url = "/api/v1/wells/{{ well_id }}"
             $.ajax({
                 url: url,
                 success: function (data) {
@@ -15,8 +16,27 @@
                 }
             })
 
+            function load_recordset_table(table_id, columns, ){
+                let url = "/api/v1/wells/{{ well_id }}/" +table_id
+
+                let options = {"info": false,
+                    "paging": false,
+                    "searching": false,
+                    "ordering": false,
+                    // "scrollY": "200px",
+                    // "scrollCollapse": true,
+                    // "scrollX": true,
+                    // "autoWidth": true,
+                    // "dom": 'Bfrtip',
+                    // "buttons": ['copy', 'csv', 'excel', 'pdf', 'print'],
+                    "columns": columns,
+                    "ajax": {"url": url, "dataSrc": ""},
+                }
+                $('#'+table_id).DataTable(options);
+            }
+
+
             // do ajax call to get
-            url = "/api/v1/wells/" + well_id + "/bore"
             // $.ajax({
             //     url: url,
             //     success: function (data) {
@@ -31,28 +51,151 @@
             //     }
             // })
 
-            $('#bore').DataTable({"ajax": {"url": url, "dataSrc": ""},
-                "columns": [{'data': 'FromDepth'},
-                    {'data': 'ToDepth'},
-                ]});
-            // do ajax call to get well records
-            url = "/api/v1/wells/" + well_id + "/records"
-            $('#records').DataTable({"ajax": {"url": url, "dataSrc": ""},
-                "columns": [{'data': 'WellDataID'},
-                    {'data': 'WellName'},
-                    {'data': 'ActionDate'},
-                ]})
+            load_recordset_table('drillers', [
+                {'data': 'RecrdsetID'},
+                {'data': 'WorkType'},
+                {'data': 'Information'},
+            ])
 
+            load_recordset_table("casing", [
+                {'data': 'RecrdsetID'},
+                {'data': 'Depth'},
+                {'data': 'DepthType'},
+                {'data': 'CasingType'},
+                {'data': 'CasDiaType'},
+                {'data': 'CasingMtrl'},
+                {'data': 'CasingDiam'},
+                {'data': 'CasDiaUnit'},
+                {'data': 'CasDpthDrl'},
+                {'data': 'CasDpthLog'},
+                {'data': 'CasingWgt'},
+                {'data': 'CasngWgtUn'},
+                {'data': 'CasngThick'},
+                {'data': 'CasngThkUn'},
+                {'data': 'CasingLen'},
+                {'data': 'CasLenUnit'},
+                {'data': 'Sax'},
+                {'data': 'CmntRcd'},
+                {'data': 'Comments'},
+            ])
+
+            load_recordset_table("bore", [
+                {'data': 'RecrdsetID'},
+                {'data': 'FromDepth'},
+                {'data': 'ToDepth'},
+            ])
+
+            load_recordset_table("history", [
+                {'data': 'RecrdsetID'},
+                {'data': 'ActionDate'},
+                {'data': 'ActionClss'},
+                {'data': 'WorkType'},
+                {'data': 'SpudDate'},
+                {'data': 'Commodity'},
+                {'data': 'PlugBack'},
+                {'data': 'BridgePlug'},
+                {'data': 'TotalDepth'},
+                {'data': 'Results'},
+                {'data': 'LeaseID'},
+                {'data': 'Operator'},
+                {'data': 'Contractor'},
+                {'data': 'Driller'},
+                {'data': 'Status'},
+            ])
+
+
+            load_recordset_table("liner", [
+                {'data': 'RecrdsetID'},
+                {'data': 'FromDepth'},
+                {'data': 'ToDepth'},
+                {'data': 'Sax'},
+                {'data': 'LinerSize'},
+                {'data': 'Comments'},
+            ])
+
+            load_recordset_table('lithlog', [
+                {'data': 'GeoID'},
+                {'data': 'FromDepth'},
+                {'data': 'Name'},
+                {'data': 'ToDepth'},
+                {'data': 'LithClass'},
+                {'data': 'LithType'},
+                {'data': 'IgneousCmp'},
+                {'data': 'MMfacies'},
+                {'data': 'Mineralogy'},
+                {'data': 'PrimLith'},
+                {'data': 'SecondLith'},
+                {'data': 'ShortDesc'},
+                {'data': 'UnitDesc'},
+                {'data': 'Texture'},
+                {'data': 'Color'},
+                {'data': 'GrainSize'},
+                {'data': 'Sorting'},
+                {'data': 'Cemntation'},
+                {'data': 'Induration'},
+                {'data': 'Bedding'},
+                {'data': 'BedThkness'},
+                {'data': 'ThickUnits'},
+                {'data': 'Protolith'},
+                {'data': 'Comments'},
+            ])
+
+            load_recordset_table("logdata", [
+                {'data': 'LogClass'},
+                {'data': 'LogType'},
+                {'data': 'LogTitle'},
+                {'data': 'LogDate'},
+                {'data': 'FromDepth'},
+                {'data': 'ToDepth'},
+                {'data': 'Hotlink'},
+                {'data': 'FileNo'},
+                {'data': 'FileLoc'},
+                {'data': 'Int_Notes'},
+            ])
+
+            load_recordset_table("lithstrat", [
+                {'data': 'LithClass'},
+                {'data': 'UnitBasis'},
+                {'data': 'UnitName'},
+                {'data': 'GeoID'},
+                {'data': 'WithinUnit'},
+                {'data': 'Top_Qual'},
+                {'data': 'Depth2Top'},
+                {'data': 'Top_TVD'},
+                {'data': 'Elev_Top'},
+                {'data': 'Botm_Qual'},
+                {'data': 'Depth2Botm'},
+                {'data': 'Bottom_TVD'},
+                {'data': 'Elev_Bot'},
+                {'data': 'DpthMethod'},
+                {'data': 'PickConfid'},
+                {'data': 'Absent'},
+                {'data': 'Overturned'},
+                {'data': 'Duplicated'},
+                {'data': 'Exclude'},
+                {'data': 'CheckPick'},
+                {'data': 'Int_Notes'},
+            ])
+
+
+            load_recordset_table("records", [{'data': 'WellDataID'},
+                {'data': 'RecrdSetID'},
+                {'data': 'WellName'},
+                {'data': 'ActionDate'},
+
+            ])
         }
+
         $(window).on("load", loadwindow)
     </script>
 
     <style>
-        table tr, td, th {
+        table.dataTable tr, td, th {
             border-collapse: collapse;
             border-spacing: 0;
             width: 100%;
             border: 1px solid #ddd;
+            font-size: 8pt;
         }
     </style>
 
@@ -75,19 +218,7 @@
     </table>
 
 </div>
-<div class="row">
-    <H3>Records</H3>
-    <table id="bore" class="display compact">
-        <thead>
-        <tr>
-            <th>WellDataID</th>
-            <th>WellName</th>
-            <th>ActionDate</th>
-        </tr>
-        </thead>
-    </table>
 
-</div>
 
 <div class="row">
     <H3>Records</H3>
@@ -95,6 +226,7 @@
         <thead>
         <tr>
             <th>WellDataID</th>
+            <th>RecordSetID</th>
             <th>WellName</th>
             <th>ActionDate</th>
         </tr>
@@ -103,6 +235,187 @@
 
 </div>
 
+<div class="row">
+    <div class="col-6">
+        <H3>Bore</H3>
+        <table id="bore" class="display compact">
+            <thead>
+            <tr>
+                <th>RecordSetID</th>
+                <th>FromDepth</th>
+                <th>ToDepth</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-6">
+        <h3>LogData</h3>
+        <table id="logdata">
+            <thead>
+                <tr>
+                    <th>LogClass</th>
+                    <th>LogType</th>
+                    <th>LogTitle</th>
+                    <th>LogDate</th>
+                    <th>FromDepth</th>
+                    <th>ToDepth</th>
+                    <th>Hotlink</th>
+                    <th>FileNo</th>
+                    <th>FileLoc</th>
+                    <th>Int_Notes</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
+<div class="row">
+    <H3>Casing</H3>
+    <table id="casing" class="display compact">
+        <thead>
+        <tr>
+            <th>RecordSetID</th>
+            <th>Depth</th>
+            <th>DepthType</th>
+            <th>CasingType</th>
+            <th>CasDiaType</th>
+            <th>CasingMtrl</th>
+            <th>CasingDiam</th>
+            <th>CasDiaUnit</th>
+            <th>CasDpthDrl</th>
+            <th>CasDpthLog</th>
+            <th>CasingWgt</th>
+            <th>CasngWgtUn</th>
+            <th>CasngThick</th>
+            <th>CasngThkUn</th>
+            <th>CasingLen</th>
+            <th>CasLenUnit</th>
+            <th>Sax</th>
+            <th>CmntRcd</th>
+            <th>Comments</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+<div class="row">
+    <div class="col-6">
+        <H3>Drillers</H3>
+        <table id="drillers" class="display compact">
+            <thead>
+            <tr>
+                <th>RecordSetID</th>
+                <th>WorkType</th>
+                <th>Information</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-6">
+        <H3>Liner</H3>
+        <table id="liner" class="display compact">
+            <thead>
+            <tr>
+                <th>RecordSetID</th>
+                <th>FromDepth</th>
+                <th>ToDepth</th>
+                <th>Sax</th>
+                <th>LinerSize</th>
+                <th>Comments</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+<div class="row">
+    <H3>History</H3>
+    <table id="history" class="display compact">
+        <thead>
+        <tr>
+            <th>RecordSetID</th>
+            <th>ActionClass</th>
+            <th>WorkType</th>
+            <th>ActionDate</th>
+            <th>SpudDate</th>
+            <th>Commodity</th>
+            <th>PlugBack</th>
+            <th>BridgePlug</th>
+            <th>TotalDepth</th>
+            <th>Results</th>
+            <th>LeaseID</th>
+            <th>Operator</th>
+            <th>Contractor</th>
+            <th>Driller</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="row">
+    <H3>LithLog</H3>
+    <table id="lithlog" class="display compact">
+        <thead>
+        <tr>
+            <th>GeoID</th>
+            <th>FromDepth</th>
+            <th>Name</th>
+            <th>ToDepth</th>
+            <th>LithClass</th>
+            <th>LithType</th>
+            <th>IgneousCmp</th>
+            <th>MMfacies</th>
+            <th>Mineralogy</th>
+            <th>PrimLith</th>
+            <th>SecondLith</th>
+            <th>ShortDesc</th>
+            <th>UnitDesc</th>
+            <th>Texture</th>
+            <th>Color</th>
+            <th>GrainSize</th>
+            <th>Sorting</th>
+            <th>Cemntation</th>
+            <th>Induration</th>
+            <th>Bedding</th>
+            <th>BedThkness</th>
+            <th>ThickUnits</th>
+            <th>Protolith</th>
+            <th>Comments</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="row">
+    <h3>LithStrat</h3>
+    <table id="lithstrat">
+        <thead>
+            <tr>
+                <th>LithClass</th>
+                <th>UnitBasis</th>
+                <th>UnitName</th>
+                <th>GeoID</th>
+                <th>WithinUnit</th>
+                <th>Top_Qual</th>
+                <th>Depth2Top</th>
+                <th>Top_TVD</th>
+                <th>Elev_Top</th>
+                <th>Botm_Qual</th>
+                <th>Depth2Botm</th>
+                <th>Bottom_TVD</th>
+                <th>Elev_Bot</th>
+                <th>DpthMethod</th>
+                <th>PickConfid</th>
+                <th>Absent</th>
+                <th>Overturned</th>
+                <th>Duplicated</th>
+                <th>Exclude</th>
+                <th>CheckPick</th>
+                <th>Int_Notes</th>
+            </tr>
+        </thead>
+    </table>
+</div>
 
 {% endblock %}

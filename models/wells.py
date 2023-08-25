@@ -181,7 +181,7 @@ class LogData(Base, GlobalIDMixin, RecordSetMixin):
     Int_Notes = Column(String(255))
 
 
-class LthStrat(Base, GlobalIDMixin, RecordSetMixin):
+class LithStrat(Base, GlobalIDMixin, RecordSetMixin):
     __tablename__ = "Well_LthStrat"
     LithClass = Column(String(50))
     UnitBasis = Column(String(16))
@@ -235,7 +235,7 @@ class Records(Base):
     liner = relationship("Liner", backref="records")
     lithlog = relationship("LithLog", backref="records")
     logdata = relationship("LogData", backref="records")
-    lithstrat = relationship("LthStrat", backref="records")
+    lithstrat = relationship("LithStrat", backref="records")
 
 
 # ============= EOF =============================================
