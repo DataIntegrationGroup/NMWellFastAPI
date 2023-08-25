@@ -124,6 +124,7 @@ def get_well_logdata(well_id: int, db: Session = Depends(get_db)):
 def get_well_perforation(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("perforation", well_id, db)
 
+
 @router.get("/{well_id}/production")
 def get_well_production(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("production", well_id, db)

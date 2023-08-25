@@ -16,21 +16,31 @@
 from datetime import datetime
 
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER as GUID
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime, MetaData, Table, BLOB
+from sqlalchemy import (
+    Column,
+    Integer,
+    Float,
+    String,
+    ForeignKey,
+    DateTime,
+    MetaData,
+    Table,
+    BLOB,
+)
 from sqlalchemy.orm import relationship, declared_attr
 
 from database import Base, engine
 
 # metadata = MetaData(bind=engine)
 
+
 class TableMixin:
     @declared_attr
     def __tablename__(self):
-        return f'Well_{self.__name__}'
+        return f"Well_{self.__name__}"
 
 
 class GlobalIDMixin(TableMixin):
-
     @declared_attr
     def GlobalID(self):
         return Column(GUID, primary_key=True, index=True)
@@ -47,7 +57,6 @@ class RecordSetMixin:
 
 
 class Bore(Base, GlobalIDMixin, RecordSetMixin):
-
     FromDepth = Column(Float)
     ToDepth = Column(Float)
     DrillMethd = Column(String(50))
@@ -217,6 +226,7 @@ class PerfIntv(Base, GlobalIDMixin, RecordSetMixin):
     because this views dont have a primary key sqlalchemy will not load them
     ask Mark to add primary keys to the views?
     """
+
     PerfType = Column(String(8))
     Comments = Column(String(255))
     DepthType = Column(String(5))
@@ -236,7 +246,7 @@ class PetroData(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Production(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = 'Well_Productn'
+    __tablename__ = "Well_Productn"
     InitialProd = Column(DateTime())
     Method = Column(String(24))
     ProdQual = Column(String(24))
@@ -274,7 +284,6 @@ class Production(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Records(Base, TableMixin):
-
     RecrdSetID = Column(GUID, primary_key=True, index=True)
     OBJECTID = Column(Integer)
     WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
@@ -341,7 +350,7 @@ class Spots(Base, TableMixin):
 
 
 class Treatment(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = 'Well_Treatmnt'
+    __tablename__ = "Well_Treatmnt"
     Comments = Column(String(255))
     Treatment = Column(String())
     ToDepth = Column(Float)
@@ -349,9 +358,11 @@ class Treatment(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Tubing(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = 'Well_Tubing'
+    __tablename__ = "Well_Tubing"
     Comments = Column(String(255))
     PackerSet = Column(Integer)
     TubingDepth = Column(Float)
     TubingSize = Column(Float)
+
+
 # ============= EOF =============================================
