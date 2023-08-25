@@ -110,14 +110,44 @@ def get_well_lithlog(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("lithlog", well_id, db)
 
 
+@router.get("/{well_id}/lithstrat")
+def get_well_lithstrat(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("lithstrat", well_id, db)
+
+
 @router.get("/{well_id}/logdata")
 def get_well_logdata(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("logdata", well_id, db)
 
 
-@router.get("/{well_id}/lithstrat")
-def get_well_lithstrat(well_id: int, db: Session = Depends(get_db)):
-    return get_recordset_assoc("lithstrat", well_id, db)
+@router.get("/{well_id}/perforation")
+def get_well_perforation(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("perforation", well_id, db)
+
+@router.get("/{well_id}/production")
+def get_well_production(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("production", well_id, db)
+
+
+@router.get("/{well_id}/samples")
+def get_well_samples(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("samples", well_id, db)
+
+
+@router.get("/{well_id}/spots")
+def get_well_spots(well_id: int, db: Session = Depends(get_db)):
+    well = get_well_db(well_id, db)
+    return well.spots
+
+
+@router.get("/{well_id}/treatment")
+def get_well_treatment(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("treatment", well_id, db)
+
+
+@router.get("/{well_id}/tubing")
+def get_well_tubing(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("tubing", well_id, db)
 
 
 # ============= EOF =============================================

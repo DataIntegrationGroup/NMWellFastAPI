@@ -35,22 +35,6 @@
                 $('#'+table_id).DataTable(options);
             }
 
-
-            // do ajax call to get
-            // $.ajax({
-            //     url: url,
-            //     success: function (data) {
-            //         console.log(data)
-            //
-            //         ${'#bore'}.DataTable({"ajax": {"url": url, "dataSrc": ""},
-            //             "columns": [{'data': 'FromDepth'},
-            //                 {'data': 'ToDepth'},
-            //
-            //             ]})
-            //         // $("#api").text(data.API)
-            //     }
-            // })
-
             load_recordset_table('drillers', [
                 {'data': 'RecrdsetID'},
                 {'data': 'WorkType'},

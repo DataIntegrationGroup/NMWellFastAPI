@@ -13,14 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===============================================================================
+from datetime import datetime
+
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER as GUID
-from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime, MetaData, Table, BLOB
 from sqlalchemy.orm import relationship, declared_attr
 
-from database import Base
+from database import Base, engine
+
+# metadata = MetaData(bind=engine)
+
+class TableMixin:
+    @declared_attr
+    def __tablename__(self):
+        return f'Well_{self.__name__}'
 
 
-class GlobalIDMixin:
+class GlobalIDMixin(TableMixin):
+
     @declared_attr
     def GlobalID(self):
         return Column(GUID, primary_key=True, index=True)
@@ -37,7 +47,6 @@ class RecordSetMixin:
 
 
 class Bore(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_Bore"
 
     FromDepth = Column(Float)
     ToDepth = Column(Float)
@@ -56,8 +65,6 @@ class Bore(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Casing(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_Casing"
-
     Depth = Column(Float)
     CasingType = Column(String(50))
     CasDiaType = Column(String(2))
@@ -79,8 +86,6 @@ class Casing(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Drillers(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_Drillers"
-
     Month_ = Column(Integer)
     Day_ = Column(Integer)
     Year_ = Column(Integer)
@@ -88,8 +93,13 @@ class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     Information = Column(String())
 
 
+class Header(Base, TableMixin):
+    OBJECTID = Column(Integer, primary_key=True, index=True)
+    WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
+    API = Column(String(14))
+
+
 class History(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_History"
     ActionClss = Column(String(16))
     WorkType = Column(String(16))
     ActionDate = Column(DateTime)
@@ -107,7 +117,6 @@ class History(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class Liner(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_Liner"
     Comments = Column(String(255))
     Sax = Column(Integer)
     ToDepth = Column(Float)
@@ -116,7 +125,6 @@ class Liner(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class LithLog(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_LithLog"
     GeoID = Column(String(16))
     FromDepth = Column(Float)
     Name = Column(String(128))
@@ -143,9 +151,7 @@ class LithLog(Base, GlobalIDMixin, RecordSetMixin):
     Comments = Column(String(255))
 
 
-class Location(Base):
-    __tablename__ = "Well_Location"
-
+class Location(Base, TableMixin):
     OBJECTID = Column(Integer, primary_key=True, index=True)
     WellDataID = Column(GUID)
 
@@ -153,6 +159,7 @@ class Location(Base):
     Long_dd83 = Column(Float)
 
     records = relationship("Records", backref="well")
+    spots = relationship("Spots", backref="well")
     header = relationship("Header", backref="well", uselist=False)
 
     @property
@@ -168,7 +175,6 @@ class Location(Base):
 
 
 class LogData(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_LogData"
     LogClass = Column(String(24))
     LogType = Column(String(8))
     LogTitle = Column(String(255))
@@ -182,7 +188,6 @@ class LogData(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class LithStrat(Base, GlobalIDMixin, RecordSetMixin):
-    __tablename__ = "Well_LthStrat"
     LithClass = Column(String(50))
     UnitBasis = Column(String(16))
     UnitName = Column(String(128))
@@ -206,16 +211,69 @@ class LithStrat(Base, GlobalIDMixin, RecordSetMixin):
     Int_Notes = Column(String(255))
 
 
-class Header(Base):
-    __tablename__ = "Well_Header"
+class PerfIntv(Base, GlobalIDMixin, RecordSetMixin):
+    """
+    __table__ = Table('Well_PerfIntv', metadata, autoload=True)
+    because this views dont have a primary key sqlalchemy will not load them
+    ask Mark to add primary keys to the views?
+    """
+    PerfType = Column(String(8))
+    Comments = Column(String(255))
+    DepthType = Column(String(5))
+    PrfToDpth = Column(Float)
+    PrfFrmDpth = Column(Float)
+    PrdIntvlID = Column(GUID)
 
-    OBJECTID = Column(Integer, primary_key=True, index=True)
-    WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
-    API = Column(String(14))
+
+class PetroData(Base, GlobalIDMixin, RecordSetMixin):
+    PrdIntvlID = Column(GUID)
+    ProdFm = Column(String(128))
+    Field_Pool = Column(String(128))
+    PrdFrmDpth = Column(Float)
+    PrdToDepth = Column(Float)
+    Int_Notes = Column(String(255))
+    OCD_PoolID = Column(String(10))
 
 
-class Records(Base):
-    __tablename__ = "Well_Records"
+class Production(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = 'Well_Productn'
+    InitialProd = Column(DateTime())
+    Method = Column(String(24))
+    ProdQual = Column(String(24))
+    ChokeSize = Column(Float)
+    ChokeQual = Column(String(24))
+    ProdZone = Column(String(50))
+    GOR = Column(Float)
+    GORqual = Column(String(24))
+    FTP = Column(Float)
+    FTPmin = Column(Float)
+    FTPmax = Column(Float)
+    FTPunits = Column(String(4))
+    SITP = Column(Float)
+    SITPunits = Column(String(4))
+    SICP = Column(Float)
+    SICPunits = Column(String(4))
+    CsgPress = Column(Float)
+    CsgPressUn = Column(String(4))
+    CsgPrsQual = Column(String(16))
+    BOPD = Column(Float)
+    BOPDqual = Column(String(8))
+    TraceOil = Column(Integer)
+    MCFGD = Column(Float)
+    MillMCFGD = Column(Float)
+    MCFGDqual = Column(String(8))
+    BWD = Column(Float)
+    BWDqual = Column(String(8))
+    APIoilGrav = Column(Float)
+    OilGravqu = Column(String(16))
+    GasGrav = Column(Float)
+    GasGravqu = Column(String(16))
+    IP = Column(String(4))
+    GasBTU = Column(Float)
+    MiscInfo = Column(String)
+
+
+class Records(Base, TableMixin):
 
     RecrdSetID = Column(GUID, primary_key=True, index=True)
     OBJECTID = Column(Integer)
@@ -224,9 +282,9 @@ class Records(Base):
     WellName = Column(String(50))
     WellNumber = Column(String(50))
     API_suffix = Column(String(4))
-    # EnteredBy
-    # EntryDate
-    # Comments
+    EnteredBy = Column(String(4))
+    EntryDate = Column(DateTime)
+    Comments = Column(String(255))
 
     bore = relationship("Bore", backref="records")
     casing = relationship("Casing", backref="records")
@@ -236,6 +294,64 @@ class Records(Base):
     lithlog = relationship("LithLog", backref="records")
     logdata = relationship("LogData", backref="records")
     lithstrat = relationship("LithStrat", backref="records")
+    perforation = relationship("PerfIntv", backref="records")
+    petro = relationship("PetroData", backref="records")
+    production = relationship("Production", backref="records")
+    samples = relationship("Samples", backref="records")
 
 
+class Samples(Base, GlobalIDMixin, RecordSetMixin):
+    SmpSetName = Column(String(128))
+    SamplClass = Column(String(24))
+    SampleType = Column(String(50))
+    SampleFm = Column(String(50))
+    SampleLoc = Column(String(128))
+    SampleDate = Column(DateTime)
+    From_Depth = Column(Float)
+    To_Depth = Column(Float)
+    SmpDpUnt = Column(String(16))
+    From_TVD = Column(Float)
+    To_TVD = Column(Float)
+    From_Elev = Column(Float)
+    To_Elev = Column(Float)
+    Porosity = Column(Integer)
+    Permeablty = Column(Integer)
+    Density = Column(Integer)
+    DST_Tests = Column(Integer)
+    ThinSect = Column(Integer)
+    Geochron = Column(Integer)
+    Geochem = Column(Integer)
+    Geothermal = Column(Integer)
+    WholeRock = Column(Integer)
+    Paleontlgy = Column(Integer)
+    EnteredBy = Column(String(4))
+    EntryDate = Column(DateTime)
+    Notes = Column(String(255))
+
+
+class Spots(Base, TableMixin):
+    DsplyScale = Column(Integer)
+    Import_ID = Column(Integer)
+    FGDC_code = Column(String(16))
+    Well_ID = Column(String(50))
+    WellDataID = Column(GUID, ForeignKey("Location.WellDataID"))
+    WellSpotID = Column(GUID, primary_key=True, index=True)
+    SHAPE = Column(BLOB)
+    OBJECTID = Column(Integer)
+
+
+class Treatment(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = 'Well_Treatmnt'
+    Comments = Column(String(255))
+    Treatment = Column(String())
+    ToDepth = Column(Float)
+    FromDepth = Column(Float)
+
+
+class Tubing(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = 'Well_Tubing'
+    Comments = Column(String(255))
+    PackerSet = Column(Integer)
+    TubingDepth = Column(Float)
+    TubingSize = Column(Float)
 # ============= EOF =============================================
