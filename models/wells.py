@@ -19,7 +19,8 @@ from sqlalchemy.orm import relationship, declared_attr
 
 from database import Base
 
-class GlobalIDMixin():
+
+class GlobalIDMixin:
     @declared_attr
     def GlobalID(self):
         return Column(GUID, primary_key=True, index=True)
@@ -29,7 +30,7 @@ class GlobalIDMixin():
         return Column(Integer)
 
 
-class RecordSetMixin():
+class RecordSetMixin:
     @declared_attr
     def RecrdsetID(self):
         return Column(GUID, ForeignKey("Well_Records.RecrdSetID"))
@@ -38,7 +39,7 @@ class RecordSetMixin():
 class Bore(Base, GlobalIDMixin, RecordSetMixin):
     __tablename__ = "Well_Bore"
 
-    FromDepth =  Column(Float)
+    FromDepth = Column(Float)
     ToDepth = Column(Float)
     DrillMethd = Column(String(50))
     BoreDia = Column(Float)
@@ -48,7 +49,7 @@ class Bore(Base, GlobalIDMixin, RecordSetMixin):
     FldRstvity = Column(Float)
     Fluid_pH = Column(Float)
     FldDensity = Column(Float)
-    FldLevel =  Column(Float)
+    FldLevel = Column(Float)
     FldViscsty = Column(Float)
     FluidLoss = Column(String(50))
     Comments = Column(String(255))
@@ -76,6 +77,7 @@ class Casing(Base, GlobalIDMixin, RecordSetMixin):
     Comments = Column(String(255))
     DepthType = Column(String(8))
 
+
 class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     __tablename__ = "Well_Drillers"
 
@@ -84,6 +86,7 @@ class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     Year_ = Column(Integer)
     WorkType = Column(String(24))
     Information = Column(String())
+
 
 #
 #
@@ -123,7 +126,7 @@ class Location(Base):
 
 
 class Header(Base):
-    __tablename__ = 'Well_Header'
+    __tablename__ = "Well_Header"
 
     OBJECTID = Column(Integer, primary_key=True, index=True)
     WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
@@ -147,4 +150,6 @@ class Records(Base):
     bore = relationship("Bore", backref="records")
     casing = relationship("Casing", backref="records")
     drillers = relationship("Drillers", backref="records")
+
+
 # ============= EOF =============================================

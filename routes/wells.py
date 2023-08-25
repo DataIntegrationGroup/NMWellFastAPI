@@ -22,6 +22,7 @@ from dependencies import get_db
 
 router = APIRouter(prefix="/api/v1/wells", tags=["wells"])
 
+
 def get_well_db(well_id, db):
     well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
     return well
@@ -32,6 +33,7 @@ def get_well(well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
     return well
 
+
 @router.get("/{well_id}/bore")
 def get_well_bore(well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
@@ -39,21 +41,23 @@ def get_well_bore(well_id: int, db: Session = Depends(get_db)):
     # well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
     # return well.bore
 
+
 @router.get("/{well_id}/casing")
 def get_well_casing(well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
     return [r.casing for r in well.records]
+
 
 @router.get("/{well_id}/drillers")
 def get_well_drillers(well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
     return [r.drillers for r in well.records]
 
+
 @router.get("/{well_id}/records")
 def get_well_records(well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
     return well.records
-
 
 
 @router.get("/{well_id}/records")
@@ -68,7 +72,7 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
     rows = db.query(wells.Location, wells.Header).join(wells.Header).all()
     # rows = db.query(wells.Well).all()
 
-    def tofeature(w,h):
+    def tofeature(w, h):
         return {
             "type": "Feature",
             "properties": {
