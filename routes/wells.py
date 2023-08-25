@@ -106,4 +106,5 @@ def get_well_liner(well_id: int, db: Session = Depends(get_db)):
 def get_well_lithlog(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("lithlog", well_id, db)
 
+
 # ============= EOF =============================================

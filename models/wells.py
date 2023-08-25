@@ -20,7 +20,7 @@ from sqlalchemy.orm import relationship, declared_attr
 from database import Base
 
 
-class GlobalIDMixin():
+class GlobalIDMixin:
     @declared_attr
     def GlobalID(self):
         return Column(GUID, primary_key=True, index=True)
@@ -30,7 +30,7 @@ class GlobalIDMixin():
         return Column(Integer)
 
 
-class RecordSetMixin():
+class RecordSetMixin:
     @declared_attr
     def RecrdsetID(self):
         return Column(GUID, ForeignKey("Well_Records.RecrdSetID"))
@@ -88,7 +88,6 @@ class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     Information = Column(String())
 
 
-
 class History(Base, GlobalIDMixin, RecordSetMixin):
     __tablename__ = "Well_History"
     ActionClss = Column(String(16))
@@ -112,7 +111,7 @@ class Liner(Base, GlobalIDMixin, RecordSetMixin):
     Comments = Column(String(255))
     Sax = Column(Integer)
     ToDepth = Column(Float)
-    FromDepth= Column(Float)
+    FromDepth = Column(Float)
     LinerSize = Column(Float)
 
 
@@ -143,6 +142,7 @@ class LithLog(Base, GlobalIDMixin, RecordSetMixin):
     Protolith = Column(String(255))
     Comments = Column(String(255))
 
+
 class Location(Base):
     __tablename__ = "Well_Location"
 
@@ -168,7 +168,7 @@ class Location(Base):
 
 
 class Header(Base):
-    __tablename__ = 'Well_Header'
+    __tablename__ = "Well_Header"
 
     OBJECTID = Column(Integer, primary_key=True, index=True)
     WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
@@ -195,4 +195,6 @@ class Records(Base):
     history = relationship("History", backref="records")
     liner = relationship("Liner", backref="records")
     lithlog = relationship("LithLog", backref="records")
+
+
 # ============= EOF =============================================
