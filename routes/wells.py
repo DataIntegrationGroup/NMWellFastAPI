@@ -23,53 +23,11 @@ from dependencies import get_db
 router = APIRouter(prefix="/api/v1/wells", tags=["wells"])
 
 
-def get_well_db(well_id, db):
-    well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
-    return well
-
-
-@router.get("/{well_id}")
-def get_well(well_id: int, db: Session = Depends(get_db)):
-    well = get_well_db(well_id, db)
-    return well
-
-
-@router.get("/{well_id}/bore")
-def get_well_bore(well_id: int, db: Session = Depends(get_db)):
-    well = get_well_db(well_id, db)
-    return [r.bore for r in well.records]
-    # well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
-    # return well.bore
-
-
-@router.get("/{well_id}/casing")
-def get_well_casing(well_id: int, db: Session = Depends(get_db)):
-    well = get_well_db(well_id, db)
-    return [r.casing for r in well.records]
-
-
-@router.get("/{well_id}/drillers")
-def get_well_drillers(well_id: int, db: Session = Depends(get_db)):
-    well = get_well_db(well_id, db)
-    return [r.drillers for r in well.records]
-
-
-@router.get("/{well_id}/records")
-def get_well_records(well_id: int, db: Session = Depends(get_db)):
-    well = get_well_db(well_id, db)
-    return well.records
-
-
-@router.get("/{well_id}/records")
-def get_well_records(well_id: int, db: Session = Depends(get_db)):
-    well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
-    return well.records
-
-
 @router.get("/")
 def get_wells(f: str = None, db: Session = Depends(get_db)):
     # rows = db.query(wells.Well).filter(wells.Well.API.is_not(None)).limit(10).all()
     rows = db.query(wells.Location, wells.Header).join(wells.Header).all()
+
     # rows = db.query(wells.Well).all()
 
     def tofeature(w, h):
@@ -90,5 +48,62 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
 
     return ret
 
+
+def get_well_db(well_id, db):
+    well = db.query(wells.Location).filter(wells.Location.OBJECTID == well_id).first()
+    return well
+
+
+def get_recordset_assoc(attr, well_id, db):
+    well = get_well_db(well_id, db)
+    return [getattr(r, attr) for r in well.records]
+
+
+@router.get("/{well_id}")
+def get_well(well_id: int, db: Session = Depends(get_db)):
+    well = get_well_db(well_id, db)
+    return well
+
+
+@router.get("/{well_id}/records")
+def get_well_records(well_id: int, db: Session = Depends(get_db)):
+    well = get_well_db(well_id, db)
+    return well.records
+
+
+@router.get("/{well_id}/bore")
+def get_well_bore(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("bore", well_id, db)
+
+
+@router.get("/{well_id}/casing")
+def get_well_casing(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("casing", well_id, db)
+
+
+@router.get("/{well_id}/drillers")
+def get_well_drillers(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("drillers", well_id, db)
+
+
+@router.get("/{well_id}/header")
+def get_well_header(well_id: int, db: Session = Depends(get_db)):
+    well = get_well_db(well_id, db)
+    return well.header
+
+
+@router.get("/{well_id}/history")
+def get_well_history(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("history", well_id, db)
+
+
+@router.get("/{well_id}/liner")
+def get_well_liner(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("liner", well_id, db)
+
+
+@router.get("/{well_id}/lithlog")
+def get_well_lithlog(well_id: int, db: Session = Depends(get_db)):
+    return get_recordset_assoc("lithlog", well_id, db)
 
 # ============= EOF =============================================

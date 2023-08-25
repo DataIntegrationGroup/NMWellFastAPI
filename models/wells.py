@@ -20,7 +20,7 @@ from sqlalchemy.orm import relationship, declared_attr
 from database import Base
 
 
-class GlobalIDMixin:
+class GlobalIDMixin():
     @declared_attr
     def GlobalID(self):
         return Column(GUID, primary_key=True, index=True)
@@ -30,7 +30,7 @@ class GlobalIDMixin:
         return Column(Integer)
 
 
-class RecordSetMixin:
+class RecordSetMixin():
     @declared_attr
     def RecrdsetID(self):
         return Column(GUID, ForeignKey("Well_Records.RecrdSetID"))
@@ -88,19 +88,60 @@ class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     Information = Column(String())
 
 
-#
-#
-# class History(Base):
-#     __tablename__ = "Well_History"
-#
-#
-# class Liner(Base):
-#     __tablename__ = "Well_Liner"
-#
-#
-# class LithLog(Base):
-#     __tablename__ = "Well_LithLog"
 
+class History(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_History"
+    ActionClss = Column(String(16))
+    WorkType = Column(String(16))
+    ActionDate = Column(DateTime)
+    SpudDate = Column(DateTime)
+    Commodity = Column(String(16))
+    PlugBack = Column(Float)
+    BridgePlug = Column(String(50))
+    TotalDepth = Column(Float)
+    Results = Column(String(16))
+    LeaseID = Column(String(128))
+    Operator = Column(String(50))
+    Contractor = Column(String(50))
+    Driller = Column(String(50))
+    Status = Column(String(16))
+
+
+class Liner(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_Liner"
+    Comments = Column(String(255))
+    Sax = Column(Integer)
+    ToDepth = Column(Float)
+    FromDepth= Column(Float)
+    LinerSize = Column(Float)
+
+
+class LithLog(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_LithLog"
+    GeoID = Column(String(16))
+    FromDepth = Column(Float)
+    Name = Column(String(128))
+    ToDepth = Column(Float)
+    LithClass = Column(String(50))
+    LithType = Column(String(50))
+    IgneousCmp = Column(String(50))
+    MMfacies = Column(String(50))
+    Mineralogy = Column(String(255))
+    PrimLith = Column(String(128))
+    SecondLith = Column(String(128))
+    ShortDesc = Column(String(255))
+    UnitDesc = Column(String())
+    Texture = Column(String(255))
+    Color = Column(String(255))
+    GrainSize = Column(String(255))
+    Sorting = Column(String(255))
+    Cemntation = Column(String(255))
+    Induration = Column(String(255))
+    Bedding = Column(String(255))
+    BedThkness = Column(Float)
+    ThickUnits = Column(String(8))
+    Protolith = Column(String(255))
+    Comments = Column(String(255))
 
 class Location(Base):
     __tablename__ = "Well_Location"
@@ -112,6 +153,7 @@ class Location(Base):
     Long_dd83 = Column(Float)
 
     records = relationship("Records", backref="well")
+    header = relationship("Header", backref="well", uselist=False)
 
     @property
     def geometry(self):
@@ -126,7 +168,7 @@ class Location(Base):
 
 
 class Header(Base):
-    __tablename__ = "Well_Header"
+    __tablename__ = 'Well_Header'
 
     OBJECTID = Column(Integer, primary_key=True, index=True)
     WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
@@ -150,6 +192,7 @@ class Records(Base):
     bore = relationship("Bore", backref="records")
     casing = relationship("Casing", backref="records")
     drillers = relationship("Drillers", backref="records")
-
-
+    history = relationship("History", backref="records")
+    liner = relationship("Liner", backref="records")
+    lithlog = relationship("LithLog", backref="records")
 # ============= EOF =============================================
