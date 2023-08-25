@@ -1,7 +1,5 @@
 fastapi
-fastapi_pagination
 fastapi_utils
-fastapi_cache2
 uvicorn
 sqlalchemy
 pymssql

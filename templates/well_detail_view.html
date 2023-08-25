@@ -15,7 +15,26 @@
                 }
             })
 
+            // do ajax call to get
+            url = "/api/v1/wells/" + well_id + "/bore"
+            // $.ajax({
+            //     url: url,
+            //     success: function (data) {
+            //         console.log(data)
+            //
+            //         ${'#bore'}.DataTable({"ajax": {"url": url, "dataSrc": ""},
+            //             "columns": [{'data': 'FromDepth'},
+            //                 {'data': 'ToDepth'},
+            //
+            //             ]})
+            //         // $("#api").text(data.API)
+            //     }
+            // })
 
+            $('#bore').DataTable({"ajax": {"url": url, "dataSrc": ""},
+                "columns": [{'data': 'FromDepth'},
+                    {'data': 'ToDepth'},
+                ]});
             // do ajax call to get well records
             url = "/api/v1/wells/" + well_id + "/records"
             $('#records').DataTable({"ajax": {"url": url, "dataSrc": ""},
@@ -53,6 +72,19 @@
             <td>API</td>
             <td id="api"></td>
         </tr>
+    </table>
+
+</div>
+<div class="row">
+    <H3>Records</H3>
+    <table id="bore" class="display compact">
+        <thead>
+        <tr>
+            <th>WellDataID</th>
+            <th>WellName</th>
+            <th>ActionDate</th>
+        </tr>
+        </thead>
     </table>
 
 </div>

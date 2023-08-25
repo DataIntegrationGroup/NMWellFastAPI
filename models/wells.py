@@ -15,18 +15,95 @@
 # ===============================================================================
 from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER as GUID
 from sqlalchemy import Column, Integer, Float, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declared_attr
 
 from database import Base
 
+class GlobalIDMixin():
+    @declared_attr
+    def GlobalID(self):
+        return Column(GUID, primary_key=True, index=True)
 
-class Well(Base):
-    __tablename__ = "tbl_well_locations"
+    @declared_attr
+    def OBJECTID(self):
+        return Column(Integer)
+
+
+class RecordSetMixin():
+    @declared_attr
+    def RecrdsetID(self):
+        return Column(GUID, ForeignKey("Well_Records.RecrdSetID"))
+
+
+class Bore(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_Bore"
+
+    FromDepth =  Column(Float)
+    ToDepth = Column(Float)
+    DrillMethd = Column(String(50))
+    BoreDia = Column(Float)
+    BoreUnits = Column(String(16))
+    DrillFluid = Column(String(16))
+    FldSalinity = Column(Float)
+    FldRstvity = Column(Float)
+    Fluid_pH = Column(Float)
+    FldDensity = Column(Float)
+    FldLevel =  Column(Float)
+    FldViscsty = Column(Float)
+    FluidLoss = Column(String(50))
+    Comments = Column(String(255))
+
+
+class Casing(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_Casing"
+
+    Depth = Column(Float)
+    CasingType = Column(String(50))
+    CasDiaType = Column(String(2))
+    CasingMtrl = Column(String(50))
+    CasingDiam = Column(Float)
+    CasDiaUnit = Column(String(16))
+    CasDpthDrl = Column(Float)
+    CasDpthLog = Column(Float)
+    CasingWgt = Column(Float)
+    CasngWgtUn = Column(String(8))
+    CasngThick = Column(Float)
+    CasngThkUn = Column(String(16))
+    CasingLen = Column(Float)
+    CasLenUnit = Column(String(16))
+    Sax = Column(Integer)
+    CmntRcd = Column(String(25))
+    Comments = Column(String(255))
+    DepthType = Column(String(8))
+
+class Drillers(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_Drillers"
+
+    Month_ = Column(Integer)
+    Day_ = Column(Integer)
+    Year_ = Column(Integer)
+    WorkType = Column(String(24))
+    Information = Column(String())
+
+#
+#
+# class History(Base):
+#     __tablename__ = "Well_History"
+#
+#
+# class Liner(Base):
+#     __tablename__ = "Well_Liner"
+#
+#
+# class LithLog(Base):
+#     __tablename__ = "Well_LithLog"
+
+
+class Location(Base):
+    __tablename__ = "Well_Location"
 
     OBJECTID = Column(Integer, primary_key=True, index=True)
     WellDataID = Column(GUID)
-
-    API = Column(String(12))
 
     Lat_dd83 = Column(Float)
     Long_dd83 = Column(Float)
@@ -45,12 +122,20 @@ class Well(Base):
         return {"coordinates": [lon, lat], "type": "Point"}
 
 
+class Header(Base):
+    __tablename__ = 'Well_Header'
+
+    OBJECTID = Column(Integer, primary_key=True, index=True)
+    WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
+    API = Column(String(14))
+
+
 class Records(Base):
-    __tablename__ = "tbl_well_records"
+    __tablename__ = "Well_Records"
 
     RecrdSetID = Column(GUID, primary_key=True, index=True)
-    # OBJECTID = Column(Integer, primary_key=True, index=True)
-    WellDataID = Column(GUID, ForeignKey("tbl_well_locations.WellDataID"))
+    OBJECTID = Column(Integer)
+    WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
     ActionDate = Column(DateTime)
     WellName = Column(String(50))
     WellNumber = Column(String(50))
@@ -59,5 +144,7 @@ class Records(Base):
     # EntryDate
     # Comments
 
-
+    bore = relationship("Bore", backref="records")
+    casing = relationship("Casing", backref="records")
+    drillers = relationship("Drillers", backref="records")
 # ============= EOF =============================================
