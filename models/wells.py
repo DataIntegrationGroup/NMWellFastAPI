@@ -236,4 +236,6 @@ class Records(Base):
     lithlog = relationship("LithLog", backref="records")
     logdata = relationship("LogData", backref="records")
     lithstrat = relationship("LthStrat", backref="records")
+
+
 # ============= EOF =============================================
