@@ -161,6 +161,98 @@
                 {'data': 'Int_Notes'},
             ])
 
+            load_recordset_table("samples", [
+                {"data": "SmpSetName"},
+                {"data": "SamplClass"},
+                {"data": "SampleType"},
+                {"data": "SampleFm"},
+                {"data": "SampleLoc"},
+                {"data": "SampleDate"},
+                {"data": "From_Depth"},
+                {"data": "To_Depth"},
+                {"data": "SmpDpUnt"},
+                {"data": "From_TVD"},
+                {"data": "To_TVD"},
+                {"data": "From_Elev"},
+                {"data": "To_Elev"},
+                {"data": "Porosity"},
+                {"data": "Permeablty"},
+                {"data": "Density"},
+                {"data": "DST_Tests"},
+                {"data": "ThinSect"},
+                {"data": "Geochron"},
+                {"data": "Geochem"},
+                {"data": "Geothermal"},
+                {"data": "WholeRock"},
+                {"data": "Paleontlgy"},
+                {"data": "EnteredBy"},
+                {"data": "EntryDate"},
+                {"data": "Notes"},
+            ])
+            load_recordset_table("tubing",[{'data': 'Comments'},
+                {'data': "PackerSet"},
+                {'data': "TubingDepth"},
+                {"data": "TubingSize"}] )
+
+            load_recordset_table("treatments", [{'data': 'Treatment'},
+                {'data': 'Comment'},
+                {'data': 'ToDepth'},
+                {'data': 'FromDepth'}])
+
+            load_recordset_table("petro", [
+                {'data': 'PrdIntvlID'},
+                {'data': 'ProdFm'},
+                {'data': 'Field_Pool'},
+                {'data': 'PrdFrmDpth'},
+                {'data': 'PrdToDepth'},
+                {'data': 'Int_Notes'},
+                {'data': 'OCD_PoolID'},
+            ])
+
+            // load_recordset_table("perforation", [
+            //     {'data': 'PerfType'},
+            //     {'data': 'Comments'},
+            //     {'data': 'DepthType'},
+            //     {'data': 'PrfToDpth'},
+            //     {'data': 'PrfFrmDpth'},
+            //     {'data': 'PrdIntvlID'}])
+
+            load_recordset_table("production", [
+                {"data": "InitialProd"},
+                {"data": "Method"},
+                {"data": "ProdQual"},
+                {"data": "ChokeSize"},
+                {"data": "ChokeQual"},
+                {"data": "ProdZone"},
+                {"data": "GOR"},
+                {"data": "GORqual"},
+                {"data": "FTP"},
+                {"data": "FTPmin"},
+                {"data": "FTPmax"},
+                {"data": "FTPunits"},
+                {"data": "SITP"},
+                {"data": "SITPunits"},
+                {"data": "SICP"},
+                {"data": "SICPunits"},
+                {"data": "CsgPress"},
+                {"data": "CsgPressUn"},
+                {"data": "CsgPrsQual"},
+                {"data": "BOPD"},
+                {"data": "BOPDqual"},
+                {"data": "TraceOil"},
+                {"data": "MCFGD"},
+                {"data": "MillMCFGD"},
+                {"data": "MCFGDqual"},
+                {"data": "BWD"},
+                {"data": "BWDqual"},
+                {"data": "APIoilGrav"},
+                {"data": "OilGravqu"},
+                {"data": "GasGrav"},
+                {"data": "GasGravqu"},
+                {"data": "IP"},
+                {"data": "GasBTU"},
+                {"data": "MiscInfo"},
+            ])
 
             load_recordset_table("records", [{'data': 'WellDataID'},
                 {'data': 'RecrdSetID'},
@@ -280,7 +372,140 @@
         </tr>
         </thead>
     </table>
+</div>
 
+<div class="row">
+    <div>
+        <h3>Samples</h3>
+        <table id="samples">
+            <thead>
+                <tr>
+                    <th>SmpSetName</th>
+                    <th>SamplClass</th>
+                    <th>SampleType</th>
+                    <th>SampleFm</th>
+                    <th>SampleLoc</th>
+                    <th>SampleDate</th>
+                    <th>From_Depth</th>
+                    <th>To_Depth</th>
+                    <th>SmpDpUnt</th>
+                    <th>From_TVD</th>
+                    <th>To_TVD</th>
+                    <th>From_Elev</th>
+                    <th>To_Elev</th>
+                    <th>Porosity</th>
+                    <th>Permeablty</th>
+                    <th>Density</th>
+                    <th>DST_Tests</th>
+                    <th>ThinSect</th>
+                    <th>Geochron</th>
+                    <th>Geochem</th>
+                    <th>Geothermal</th>
+                    <th>WholeRock</th>
+                    <th>Paleontlgy</th>
+                    <th>EnteredBy</th>
+                    <th>EntryDate</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <h3>Production</h3>
+    <table id="production">
+        <thead>
+            <tr>
+                <th>InitialProd</th>
+                <th>Method</th>
+                <th>ProdQual</th>
+                <th>ChokeSize</th>
+                <th>ChokeQual</th>
+                <th>ProdZone</th>
+                <th>GOR</th>
+                <th>GORqual</th>
+                <th>FTP</th>
+                <th>FTPmin</th>
+                <th>FTPmax</th>
+                <th>FTPunits</th>
+                <th>SITP</th>
+                <th>SITPunits</th>
+                <th>SICP</th>
+                <th>SICPunits</th>
+                <th>CsgPress</th>
+                <th>CsgPressUn</th>
+                <th>CsgPrsQual</th>
+                <th>BOPD</th>
+                <th>BOPDqual</th>
+                <th>TraceOil</th>
+                <th>MCFGD</th>
+                <th>MillMCFGD</th>
+                <th>MCFGDqual</th>
+                <th>BWD</th>
+                <th>BWDqual</th>
+                <th>APIoilGrav</th>
+                <th>OilGravqu</th>
+                <th>GasGrav</th>
+                <th>GasGravqu</th>
+                <th>IP</th>
+                <th>GasBTU</th>
+                <th>MiscInfo</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="row">
+<!--    <div class="col-6">-->
+<!--        <h3>Perforations</h3>-->
+<!--        <table id="perforation"></table>-->
+<!--    </div>-->
+    <div class="col-12">
+        <h3>Petro</h3>
+        <table id="petro">
+            <thead>
+                <tr>
+                    <th>PrdIntvlID</th>
+                    <th>ProdFm</th>
+                    <th>Field_Pool</th>
+                    <th>PrdFrmDpth</th>
+                    <th>PrdToDepth</th>
+                    <th>Int_Notes</th>
+                    <th>OCD_PoolID</th>
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <h3>Tubing</h3>
+        <table id="tubing">
+            <thead>
+            <tr>
+                <th>Comments</th>
+                <th>PackerSet</th>
+                <th>TubingDepth</th>
+                <th>TubingSize</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-6">
+        <h3>Treatments</h3>
+        <table id="treatment">
+            <thead>
+            <tr>
+                <th>Treatment</th>
+                <th>FromDepth</th>
+                <th>ToDepth</th>
+                <th>Comments</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
 </div>
 <div class="row">
     <div class="col-6">

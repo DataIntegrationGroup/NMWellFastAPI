@@ -255,8 +255,9 @@ class PerfIntv(Base, GlobalIDMixin, RecordSetMixin):
     PrdIntvlID = Column(GUID)
 
 
-class PetroData(Base, GlobalIDMixin, RecordSetMixin):
-    PrdIntvlID = Column(GUID)
+class PetroDat(Base, RecordSetMixin):
+    __tablename__ = "Well_PetroDat"
+    PrdIntvlID = Column(GUID, primary_key=True, index=True)
     ProdFm = Column(String(128))
     Field_Pool = Column(String(128))
     PrdFrmDpth = Column(Float)
@@ -324,12 +325,17 @@ class Records(Base, TableMixin):
     logdata = relationship("LogData", backref="records")
     lithstrat = relationship("LithStrat", backref="records")
     perforation = relationship("PerfIntv", backref="records")
-    petro = relationship("PetroData", backref="records")
+    petro = relationship("PetroDat", backref="records")
     production = relationship("Production", backref="records")
     samples = relationship("Samples", backref="records")
+    tubing = relationship("Tubing", backref="records")
+    treatments = relationship("Treatment", backref="records")
 
 
-class Samples(Base, GlobalIDMixin, RecordSetMixin):
+class Samples(Base, RecordSetMixin):
+    __tablename__ = 'Well_Samples'
+    OBJECTID = Column(Integer)
+    SamplSetID = Column(GUID, primary_key=True, index=True)
     SmpSetName = Column(String(128))
     SamplClass = Column(String(24))
     SampleType = Column(String(50))
