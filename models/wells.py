@@ -56,6 +56,18 @@ class RecordSetMixin:
         return Column(GUID, ForeignKey("Well_Records.RecrdSetID"))
 
 
+class LUMixin:
+    @declared_attr
+    def __tablename__(self):
+        return self.__name__
+
+
+# class LU_WorkType(Base, LUMixin):
+#     Code = Column(String(50), primary_key=True)
+#     Value = Column(String(50))
+#     Comments = Column(String(50))
+
+
 class Bore(Base, GlobalIDMixin, RecordSetMixin):
     FromDepth = Column(Float)
     ToDepth = Column(Float)
@@ -98,8 +110,14 @@ class Drillers(Base, GlobalIDMixin, RecordSetMixin):
     Month_ = Column(Integer)
     Day_ = Column(Integer)
     Year_ = Column(Integer)
-    WorkType = Column(String(24))
     Information = Column(String())
+    WorkType = Column(String(24))
+
+    # WorkType = Column(String(24), ForeignKey("LU_WorkType.Code"))
+    # work_type_ = relationship("LU_WorkType")
+    # @property
+    # def worktype_meaning(self):
+    #     return self.work_type_.Value
 
 
 class Header(Base, TableMixin):
@@ -197,6 +215,8 @@ class LogData(Base, GlobalIDMixin, RecordSetMixin):
 
 
 class LithStrat(Base, GlobalIDMixin, RecordSetMixin):
+    __tablename__ = "Well_LthStrat"
+
     LithClass = Column(String(50))
     UnitBasis = Column(String(16))
     UnitName = Column(String(128))
@@ -343,7 +363,7 @@ class Spots(Base, TableMixin):
     Import_ID = Column(Integer)
     FGDC_code = Column(String(16))
     Well_ID = Column(String(50))
-    WellDataID = Column(GUID, ForeignKey("Location.WellDataID"))
+    WellDataID = Column(GUID, ForeignKey("Well_Location.WellDataID"))
     WellSpotID = Column(GUID, primary_key=True, index=True)
     SHAPE = Column(BLOB)
     OBJECTID = Column(Integer)
