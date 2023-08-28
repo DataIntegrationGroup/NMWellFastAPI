@@ -333,7 +333,7 @@ class Records(Base, TableMixin):
 
 
 class Samples(Base, RecordSetMixin):
-    __tablename__ = 'Well_Samples'
+    __tablename__ = "Well_Samples"
     OBJECTID = Column(Integer)
     SamplSetID = Column(GUID, primary_key=True, index=True)
     SmpSetName = Column(String(128))
