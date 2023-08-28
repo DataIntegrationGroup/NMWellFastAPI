@@ -150,4 +150,5 @@ def get_well_treatment(well_id: int, db: Session = Depends(get_db)):
 def get_well_tubing(well_id: int, db: Session = Depends(get_db)):
     return get_recordset_assoc("tubing", well_id, db)
 
+
 # ============= EOF =============================================
