@@ -31,6 +31,7 @@ from sqlalchemy.orm import relationship, declared_attr
 
 from database import Base, engine
 
+
 # metadata = MetaData(bind=engine)
 
 
@@ -363,6 +364,57 @@ class Samples(Base, RecordSetMixin):
     EntryDate = Column(DateTime)
     Notes = Column(String(255))
 
+    tempvsdepths = relationship("TempVsDepth", backref="samples")
+    intervals = relationship("Intervals", backref="samples")
+    bhtheaders = relationship("BHTheaders", backref="samples")
+
+
+class BHTheaders(Base):
+    __tablename__ = "GT_BHTheader"
+    BHTGUID = Column(GUID, primary_key=True, index=True)
+    SamplSetID = Column(GUID, ForeignKey("Well_Samples.SamplSetID"))
+    BoreDia = Column(Float)
+
+    data = relationship("BHTdata", backref="bht")
+
+
+class BHTdata(Base):
+    __tablename__ = "GT_BHTdata"
+    BHTGUID = Column(GUID, ForeignKey("GT_BHTheader.BHTGUID"), primary_key=True)
+    BHT = Column(Float)
+    Depth = Column(Float)
+
+
+class Intervals(Base, ):
+    __tablename__ = 'WS_Interval'
+    IntrvlGUID = Column(GUID, primary_key=True, index=True)
+    SamplSetID = Column(GUID, ForeignKey("Well_Samples.SamplSetID"))
+    From_Depth = Column(Float)
+    To_Depth = Column(Float)
+
+    heatflows = relationship("HeatFlow", backref="intervals")
+    conductivities = relationship("ThermalConductivity", backref="intervals")
+
+
+class ThermalConductivity(Base, GlobalIDMixin):
+    __tablename__ = 'GT_Conductvty'
+    IntrvlGUID = Column(GUID, ForeignKey("WS_Interval.IntrvlGUID"))
+    Cnductvity = Column(Float)
+
+
+class HeatFlow(Base, GlobalIDMixin):
+    __tablename__ = 'GT_HeatFlow'
+    IntrvlGUID = Column(GUID, ForeignKey("WS_Interval.IntrvlGUID"))
+    Ka = Column(Float)
+    Kpr = Column(Float)
+
+
+class TempVsDepth(Base, GlobalIDMixin):
+    __tablename__ = 'GT_TempDepth'
+    Depth = Column(Float)
+    Temp = Column(Float)
+    SamplSetID = Column(GUID, ForeignKey("Well_Samples.SamplSetID"))
+
 
 class Spots(Base, TableMixin):
     DsplyScale = Column(Integer)
@@ -389,6 +441,5 @@ class Tubing(Base, GlobalIDMixin, RecordSetMixin):
     PackerSet = Column(Integer)
     TubingDepth = Column(Float)
     TubingSize = Column(Float)
-
 
 # ============= EOF =============================================

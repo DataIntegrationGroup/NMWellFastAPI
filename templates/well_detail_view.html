@@ -1,265 +1,290 @@
 {% extends "base.html" %}
 {% block head %}
     {{ super() }}
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+
     <script>
         function loadwindow(f) {
 
             console.log('asdfasdf')
             // do ajax call to get well info
 
-            var url = "/api/v1/wells/{{ well_id }}"
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    console.log(data)
-                    $("#api").text(data.API)
-                }
-            })
+            // var url = "/api/v1/wells/{{ well_id }}"
+            // $.ajax({
+            //     url: url,
+            //     success: function (data) {
+            //         console.log(data)
+            //         $("#api").text(data.API)
+            //     }
+            // })
+            //
+            // function load_recordset_table(table_id, columns, ){
+            //     let url = "/api/v1/wells/{{ well_id }}/" +table_id
+            //
+            //     let options = {"info": false,
+            //         "paging": false,
+            //         "searching": false,
+            //         "ordering": false,
+            //         // "scrollY": "200px",
+            //         // "scrollCollapse": true,
+            //         // "scrollX": true,
+            //         // "autoWidth": true,
+            //         // "dom": 'Bfrtip',
+            //         // "buttons": ['copy', 'csv', 'excel', 'pdf', 'print'],
+            //         "columns": columns,
+            //         "ajax": {"url": url, "dataSrc": ""},
+            //     }
+            //     $('#'+table_id).DataTable(options);
+            // }
+            //
+            // load_recordset_table('drillers', [
+            //     {'data': 'RecrdsetID'},
+            //     {'data': 'WorkType'},
+            //     {'data': 'Information'},
+            // ])
+            //
+            // load_recordset_table("casing", [
+            //     {'data': 'RecrdsetID'},
+            //     {'data': 'Depth'},
+            //     {'data': 'DepthType'},
+            //     {'data': 'CasingType'},
+            //     {'data': 'CasDiaType'},
+            //     {'data': 'CasingMtrl'},
+            //     {'data': 'CasingDiam'},
+            //     {'data': 'CasDiaUnit'},
+            //     {'data': 'CasDpthDrl'},
+            //     {'data': 'CasDpthLog'},
+            //     {'data': 'CasingWgt'},
+            //     {'data': 'CasngWgtUn'},
+            //     {'data': 'CasngThick'},
+            //     {'data': 'CasngThkUn'},
+            //     {'data': 'CasingLen'},
+            //     {'data': 'CasLenUnit'},
+            //     {'data': 'Sax'},
+            //     {'data': 'CmntRcd'},
+            //     {'data': 'Comments'},
+            // ])
+            //
+            // load_recordset_table("bore", [
+            //     {'data': 'RecrdsetID'},
+            //     {'data': 'FromDepth'},
+            //     {'data': 'ToDepth'},
+            // ])
+            //
+            // load_recordset_table("history", [
+            //     {'data': 'RecrdsetID'},
+            //     {'data': 'ActionDate'},
+            //     {'data': 'ActionClss'},
+            //     {'data': 'WorkType'},
+            //     {'data': 'SpudDate'},
+            //     {'data': 'Commodity'},
+            //     {'data': 'PlugBack'},
+            //     {'data': 'BridgePlug'},
+            //     {'data': 'TotalDepth'},
+            //     {'data': 'Results'},
+            //     {'data': 'LeaseID'},
+            //     {'data': 'Operator'},
+            //     {'data': 'Contractor'},
+            //     {'data': 'Driller'},
+            //     {'data': 'Status'},
+            // ])
+            //
+            //
+            // load_recordset_table("liner", [
+            //     {'data': 'RecrdsetID'},
+            //     {'data': 'FromDepth'},
+            //     {'data': 'ToDepth'},
+            //     {'data': 'Sax'},
+            //     {'data': 'LinerSize'},
+            //     {'data': 'Comments'},
+            // ])
+            //
+            // load_recordset_table('lithlog', [
+            //     {'data': 'GeoID'},
+            //     {'data': 'FromDepth'},
+            //     {'data': 'Name'},
+            //     {'data': 'ToDepth'},
+            //     {'data': 'LithClass'},
+            //     {'data': 'LithType'},
+            //     {'data': 'IgneousCmp'},
+            //     {'data': 'MMfacies'},
+            //     {'data': 'Mineralogy'},
+            //     {'data': 'PrimLith'},
+            //     {'data': 'SecondLith'},
+            //     {'data': 'ShortDesc'},
+            //     {'data': 'UnitDesc'},
+            //     {'data': 'Texture'},
+            //     {'data': 'Color'},
+            //     {'data': 'GrainSize'},
+            //     {'data': 'Sorting'},
+            //     {'data': 'Cemntation'},
+            //     {'data': 'Induration'},
+            //     {'data': 'Bedding'},
+            //     {'data': 'BedThkness'},
+            //     {'data': 'ThickUnits'},
+            //     {'data': 'Protolith'},
+            //     {'data': 'Comments'},
+            // ])
+            //
+            // load_recordset_table("logdata", [
+            //     {'data': 'LogClass'},
+            //     {'data': 'LogType'},
+            //     {'data': 'LogTitle'},
+            //     {'data': 'LogDate'},
+            //     {'data': 'FromDepth'},
+            //     {'data': 'ToDepth'},
+            //     {'data': 'Hotlink'},
+            //     {'data': 'FileNo'},
+            //     {'data': 'FileLoc'},
+            //     {'data': 'Int_Notes'},
+            // ])
+            //
+            // load_recordset_table("lithstrat", [
+            //     {'data': 'LithClass'},
+            //     {'data': 'UnitBasis'},
+            //     {'data': 'UnitName'},
+            //     {'data': 'GeoID'},
+            //     {'data': 'WithinUnit'},
+            //     {'data': 'Top_Qual'},
+            //     {'data': 'Depth2Top'},
+            //     {'data': 'Top_TVD'},
+            //     {'data': 'Elev_Top'},
+            //     {'data': 'Botm_Qual'},
+            //     {'data': 'Depth2Botm'},
+            //     {'data': 'Bottom_TVD'},
+            //     {'data': 'Elev_Bot'},
+            //     {'data': 'DpthMethod'},
+            //     {'data': 'PickConfid'},
+            //     {'data': 'Absent'},
+            //     {'data': 'Overturned'},
+            //     {'data': 'Duplicated'},
+            //     {'data': 'Exclude'},
+            //     {'data': 'CheckPick'},
+            //     {'data': 'Int_Notes'},
+            // ])
+            //
+            // load_recordset_table("samples", [
+            //     {"data": "SmpSetName"},
+            //     {"data": "SamplClass"},
+            //     {"data": "SampleType"},
+            //     {"data": "SampleFm"},
+            //     {"data": "SampleLoc"},
+            //     {"data": "SampleDate"},
+            //     {"data": "From_Depth"},
+            //     {"data": "To_Depth"},
+            //     {"data": "SmpDpUnt"},
+            //     {"data": "From_TVD"},
+            //     {"data": "To_TVD"},
+            //     {"data": "From_Elev"},
+            //     {"data": "To_Elev"},
+            //     {"data": "Porosity"},
+            //     {"data": "Permeablty"},
+            //     {"data": "Density"},
+            //     {"data": "DST_Tests"},
+            //     {"data": "ThinSect"},
+            //     {"data": "Geochron"},
+            //     {"data": "Geochem"},
+            //     {"data": "Geothermal"},
+            //     {"data": "WholeRock"},
+            //     {"data": "Paleontlgy"},
+            //     {"data": "EnteredBy"},
+            //     {"data": "EntryDate"},
+            //     {"data": "Notes"},
+            // ])
+            // load_recordset_table("tubing",[{'data': 'Comments'},
+            //     {'data': "PackerSet"},
+            //     {'data': "TubingDepth"},
+            //     {"data": "TubingSize"}] )
+            //
+            // load_recordset_table("treatments", [{'data': 'Treatment'},
+            //     {'data': 'Comment'},
+            //     {'data': 'ToDepth'},
+            //     {'data': 'FromDepth'}])
+            //
+            // load_recordset_table("petro", [
+            //     {'data': 'PrdIntvlID'},
+            //     {'data': 'ProdFm'},
+            //     {'data': 'Field_Pool'},
+            //     {'data': 'PrdFrmDpth'},
+            //     {'data': 'PrdToDepth'},
+            //     {'data': 'Int_Notes'},
+            //     {'data': 'OCD_PoolID'},
+            // ])
+            //
+            // // load_recordset_table("perforation", [
+            // //     {'data': 'PerfType'},
+            // //     {'data': 'Comments'},
+            // //     {'data': 'DepthType'},
+            // //     {'data': 'PrfToDpth'},
+            // //     {'data': 'PrfFrmDpth'},
+            // //     {'data': 'PrdIntvlID'}])
+            //
+            // load_recordset_table("production", [
+            //     {"data": "InitialProd"},
+            //     {"data": "Method"},
+            //     {"data": "ProdQual"},
+            //     {"data": "ChokeSize"},
+            //     {"data": "ChokeQual"},
+            //     {"data": "ProdZone"},
+            //     {"data": "GOR"},
+            //     {"data": "GORqual"},
+            //     {"data": "FTP"},
+            //     {"data": "FTPmin"},
+            //     {"data": "FTPmax"},
+            //     {"data": "FTPunits"},
+            //     {"data": "SITP"},
+            //     {"data": "SITPunits"},
+            //     {"data": "SICP"},
+            //     {"data": "SICPunits"},
+            //     {"data": "CsgPress"},
+            //     {"data": "CsgPressUn"},
+            //     {"data": "CsgPrsQual"},
+            //     {"data": "BOPD"},
+            //     {"data": "BOPDqual"},
+            //     {"data": "TraceOil"},
+            //     {"data": "MCFGD"},
+            //     {"data": "MillMCFGD"},
+            //     {"data": "MCFGDqual"},
+            //     {"data": "BWD"},
+            //     {"data": "BWDqual"},
+            //     {"data": "APIoilGrav"},
+            //     {"data": "OilGravqu"},
+            //     {"data": "GasGrav"},
+            //     {"data": "GasGravqu"},
+            //     {"data": "IP"},
+            //     {"data": "GasBTU"},
+            //     {"data": "MiscInfo"},
+            // ])
+            //
+            // load_recordset_table("records", [{'data': 'WellDataID'},
+            //     {'data': 'RecrdSetID'},
+            //     {'data': 'WellName'},
+            //     {'data': 'ActionDate'},
+            //
+            // ])
 
-            function load_recordset_table(table_id, columns, ){
-                let url = "/api/v1/wells/{{ well_id }}/" +table_id
-
-                let options = {"info": false,
-                    "paging": false,
-                    "searching": false,
-                    "ordering": false,
-                    // "scrollY": "200px",
-                    // "scrollCollapse": true,
-                    // "scrollX": true,
-                    // "autoWidth": true,
-                    // "dom": 'Bfrtip',
-                    // "buttons": ['copy', 'csv', 'excel', 'pdf', 'print'],
-                    "columns": columns,
-                    "ajax": {"url": url, "dataSrc": ""},
-                }
-                $('#'+table_id).DataTable(options);
+            // load the downhole graph
+            // console.log('loading graph', {{ 'tempvsdepth' | safe }})
+            Plotly.plot('tempvsdepth', {{ tempvsdepth | safe }}, {});
+            Plotly.plot('thermalconductivity', {{ thermalconductivity | safe }}, {});
+            Plotly.plot('heatflow', {{ heatflow | safe }}, {});
+            // const columns = [{'data': 'wellid'},
+            // {'data': 'api'},
+            // {'data': 'bht'},
+            // {'data': 'diam'},
+            // {'data': 'depth'}
+            // ]
+            // console.log({{tabledata | safe}})
+            const options = {"info": false,
+                        "paging": false,
+                        "searching": false,
+                        "ordering": false,
+                        //  "columns": columns,
+                        // "data": {{tabledata | safe}},
             }
 
-            load_recordset_table('drillers', [
-                {'data': 'RecrdsetID'},
-                {'data': 'WorkType'},
-                {'data': 'Information'},
-            ])
+            $("#welldata").DataTable(options)
 
-            load_recordset_table("casing", [
-                {'data': 'RecrdsetID'},
-                {'data': 'Depth'},
-                {'data': 'DepthType'},
-                {'data': 'CasingType'},
-                {'data': 'CasDiaType'},
-                {'data': 'CasingMtrl'},
-                {'data': 'CasingDiam'},
-                {'data': 'CasDiaUnit'},
-                {'data': 'CasDpthDrl'},
-                {'data': 'CasDpthLog'},
-                {'data': 'CasingWgt'},
-                {'data': 'CasngWgtUn'},
-                {'data': 'CasngThick'},
-                {'data': 'CasngThkUn'},
-                {'data': 'CasingLen'},
-                {'data': 'CasLenUnit'},
-                {'data': 'Sax'},
-                {'data': 'CmntRcd'},
-                {'data': 'Comments'},
-            ])
-
-            load_recordset_table("bore", [
-                {'data': 'RecrdsetID'},
-                {'data': 'FromDepth'},
-                {'data': 'ToDepth'},
-            ])
-
-            load_recordset_table("history", [
-                {'data': 'RecrdsetID'},
-                {'data': 'ActionDate'},
-                {'data': 'ActionClss'},
-                {'data': 'WorkType'},
-                {'data': 'SpudDate'},
-                {'data': 'Commodity'},
-                {'data': 'PlugBack'},
-                {'data': 'BridgePlug'},
-                {'data': 'TotalDepth'},
-                {'data': 'Results'},
-                {'data': 'LeaseID'},
-                {'data': 'Operator'},
-                {'data': 'Contractor'},
-                {'data': 'Driller'},
-                {'data': 'Status'},
-            ])
-
-
-            load_recordset_table("liner", [
-                {'data': 'RecrdsetID'},
-                {'data': 'FromDepth'},
-                {'data': 'ToDepth'},
-                {'data': 'Sax'},
-                {'data': 'LinerSize'},
-                {'data': 'Comments'},
-            ])
-
-            load_recordset_table('lithlog', [
-                {'data': 'GeoID'},
-                {'data': 'FromDepth'},
-                {'data': 'Name'},
-                {'data': 'ToDepth'},
-                {'data': 'LithClass'},
-                {'data': 'LithType'},
-                {'data': 'IgneousCmp'},
-                {'data': 'MMfacies'},
-                {'data': 'Mineralogy'},
-                {'data': 'PrimLith'},
-                {'data': 'SecondLith'},
-                {'data': 'ShortDesc'},
-                {'data': 'UnitDesc'},
-                {'data': 'Texture'},
-                {'data': 'Color'},
-                {'data': 'GrainSize'},
-                {'data': 'Sorting'},
-                {'data': 'Cemntation'},
-                {'data': 'Induration'},
-                {'data': 'Bedding'},
-                {'data': 'BedThkness'},
-                {'data': 'ThickUnits'},
-                {'data': 'Protolith'},
-                {'data': 'Comments'},
-            ])
-
-            load_recordset_table("logdata", [
-                {'data': 'LogClass'},
-                {'data': 'LogType'},
-                {'data': 'LogTitle'},
-                {'data': 'LogDate'},
-                {'data': 'FromDepth'},
-                {'data': 'ToDepth'},
-                {'data': 'Hotlink'},
-                {'data': 'FileNo'},
-                {'data': 'FileLoc'},
-                {'data': 'Int_Notes'},
-            ])
-
-            load_recordset_table("lithstrat", [
-                {'data': 'LithClass'},
-                {'data': 'UnitBasis'},
-                {'data': 'UnitName'},
-                {'data': 'GeoID'},
-                {'data': 'WithinUnit'},
-                {'data': 'Top_Qual'},
-                {'data': 'Depth2Top'},
-                {'data': 'Top_TVD'},
-                {'data': 'Elev_Top'},
-                {'data': 'Botm_Qual'},
-                {'data': 'Depth2Botm'},
-                {'data': 'Bottom_TVD'},
-                {'data': 'Elev_Bot'},
-                {'data': 'DpthMethod'},
-                {'data': 'PickConfid'},
-                {'data': 'Absent'},
-                {'data': 'Overturned'},
-                {'data': 'Duplicated'},
-                {'data': 'Exclude'},
-                {'data': 'CheckPick'},
-                {'data': 'Int_Notes'},
-            ])
-
-            load_recordset_table("samples", [
-                {"data": "SmpSetName"},
-                {"data": "SamplClass"},
-                {"data": "SampleType"},
-                {"data": "SampleFm"},
-                {"data": "SampleLoc"},
-                {"data": "SampleDate"},
-                {"data": "From_Depth"},
-                {"data": "To_Depth"},
-                {"data": "SmpDpUnt"},
-                {"data": "From_TVD"},
-                {"data": "To_TVD"},
-                {"data": "From_Elev"},
-                {"data": "To_Elev"},
-                {"data": "Porosity"},
-                {"data": "Permeablty"},
-                {"data": "Density"},
-                {"data": "DST_Tests"},
-                {"data": "ThinSect"},
-                {"data": "Geochron"},
-                {"data": "Geochem"},
-                {"data": "Geothermal"},
-                {"data": "WholeRock"},
-                {"data": "Paleontlgy"},
-                {"data": "EnteredBy"},
-                {"data": "EntryDate"},
-                {"data": "Notes"},
-            ])
-            load_recordset_table("tubing",[{'data': 'Comments'},
-                {'data': "PackerSet"},
-                {'data': "TubingDepth"},
-                {"data": "TubingSize"}] )
-
-            load_recordset_table("treatments", [{'data': 'Treatment'},
-                {'data': 'Comment'},
-                {'data': 'ToDepth'},
-                {'data': 'FromDepth'}])
-
-            load_recordset_table("petro", [
-                {'data': 'PrdIntvlID'},
-                {'data': 'ProdFm'},
-                {'data': 'Field_Pool'},
-                {'data': 'PrdFrmDpth'},
-                {'data': 'PrdToDepth'},
-                {'data': 'Int_Notes'},
-                {'data': 'OCD_PoolID'},
-            ])
-
-            // load_recordset_table("perforation", [
-            //     {'data': 'PerfType'},
-            //     {'data': 'Comments'},
-            //     {'data': 'DepthType'},
-            //     {'data': 'PrfToDpth'},
-            //     {'data': 'PrfFrmDpth'},
-            //     {'data': 'PrdIntvlID'}])
-
-            load_recordset_table("production", [
-                {"data": "InitialProd"},
-                {"data": "Method"},
-                {"data": "ProdQual"},
-                {"data": "ChokeSize"},
-                {"data": "ChokeQual"},
-                {"data": "ProdZone"},
-                {"data": "GOR"},
-                {"data": "GORqual"},
-                {"data": "FTP"},
-                {"data": "FTPmin"},
-                {"data": "FTPmax"},
-                {"data": "FTPunits"},
-                {"data": "SITP"},
-                {"data": "SITPunits"},
-                {"data": "SICP"},
-                {"data": "SICPunits"},
-                {"data": "CsgPress"},
-                {"data": "CsgPressUn"},
-                {"data": "CsgPrsQual"},
-                {"data": "BOPD"},
-                {"data": "BOPDqual"},
-                {"data": "TraceOil"},
-                {"data": "MCFGD"},
-                {"data": "MillMCFGD"},
-                {"data": "MCFGDqual"},
-                {"data": "BWD"},
-                {"data": "BWDqual"},
-                {"data": "APIoilGrav"},
-                {"data": "OilGravqu"},
-                {"data": "GasGrav"},
-                {"data": "GasGravqu"},
-                {"data": "IP"},
-                {"data": "GasBTU"},
-                {"data": "MiscInfo"},
-            ])
-
-            load_recordset_table("records", [{'data': 'WellDataID'},
-                {'data': 'RecrdSetID'},
-                {'data': 'WellName'},
-                {'data': 'ActionDate'},
-
-            ])
         }
 
         $(window).on("load", loadwindow)
@@ -282,349 +307,398 @@
 <H1>Well Detail View</H1>
 
 <div class="row">
-    <table class="display compact">
-        <tr>
-            <td>Well ID</td>
-            <td id="well_id">{{ well_id }}</td>
-        </tr>
-        <tr>
-            <td>API</td>
-            <td id="api"></td>
-        </tr>
-    </table>
-
-</div>
-
-
-<div class="row">
-    <H3>Records</H3>
-    <table id="records" class="display compact">
-        <thead>
-        <tr>
-            <th>WellDataID</th>
-            <th>RecordSetID</th>
-            <th>WellName</th>
-            <th>ActionDate</th>
-        </tr>
-        </thead>
-    </table>
+    <div class="col-6">
+        <div>
+            <table id="welldata">
+                <thead>
+                <tr>
+                    <th>Well ID</th>
+                    <th>API</th>
+                    <th>Bore Diameter</th>
+                    <th>BHT</th>
+                    <th>Depth</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{well_id}}</td>
+                    <td>{{api}}</td>
+                    <td>{{bht.diam}}</td>
+                    <td>{{bht.bht}}</td>
+                    <td>{{bht.depth}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="graphcontainer">
+            <div class="graph" id="tempvsdepth"></div>
+        </div>
+    </div>
 
 </div>
 
 <div class="row">
     <div class="col-6">
-        <H3>Bore</H3>
-        <table id="bore" class="display compact">
-            <thead>
-            <tr>
-                <th>RecordSetID</th>
-                <th>FromDepth</th>
-                <th>ToDepth</th>
-            </tr>
-            </thead>
-        </table>
+        <div class="graphcontainer">
+            <div class="graph" id="thermalconductivity"></div>
+        </div>
+
     </div>
     <div class="col-6">
-        <h3>LogData</h3>
-        <table id="logdata">
-            <thead>
-                <tr>
-                    <th>LogClass</th>
-                    <th>LogType</th>
-                    <th>LogTitle</th>
-                    <th>LogDate</th>
-                    <th>FromDepth</th>
-                    <th>ToDepth</th>
-                    <th>Hotlink</th>
-                    <th>FileNo</th>
-                    <th>FileLoc</th>
-                    <th>Int_Notes</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="graphcontainer">
+            <div class="graph" id="heatflow"></div>
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <H3>Casing</H3>
-    <table id="casing" class="display compact">
-        <thead>
-        <tr>
-            <th>RecordSetID</th>
-            <th>Depth</th>
-            <th>DepthType</th>
-            <th>CasingType</th>
-            <th>CasDiaType</th>
-            <th>CasingMtrl</th>
-            <th>CasingDiam</th>
-            <th>CasDiaUnit</th>
-            <th>CasDpthDrl</th>
-            <th>CasDpthLog</th>
-            <th>CasingWgt</th>
-            <th>CasngWgtUn</th>
-            <th>CasngThick</th>
-            <th>CasngThkUn</th>
-            <th>CasingLen</th>
-            <th>CasLenUnit</th>
-            <th>Sax</th>
-            <th>CmntRcd</th>
-            <th>Comments</th>
-        </tr>
-        </thead>
-    </table>
-</div>
 
-<div class="row">
-    <div>
-        <h3>Samples</h3>
-        <table id="samples">
-            <thead>
-                <tr>
-                    <th>SmpSetName</th>
-                    <th>SamplClass</th>
-                    <th>SampleType</th>
-                    <th>SampleFm</th>
-                    <th>SampleLoc</th>
-                    <th>SampleDate</th>
-                    <th>From_Depth</th>
-                    <th>To_Depth</th>
-                    <th>SmpDpUnt</th>
-                    <th>From_TVD</th>
-                    <th>To_TVD</th>
-                    <th>From_Elev</th>
-                    <th>To_Elev</th>
-                    <th>Porosity</th>
-                    <th>Permeablty</th>
-                    <th>Density</th>
-                    <th>DST_Tests</th>
-                    <th>ThinSect</th>
-                    <th>Geochron</th>
-                    <th>Geochem</th>
-                    <th>Geothermal</th>
-                    <th>WholeRock</th>
-                    <th>Paleontlgy</th>
-                    <th>EnteredBy</th>
-                    <th>EntryDate</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
 
-<div class="row">
-    <h3>Production</h3>
-    <table id="production">
-        <thead>
-            <tr>
-                <th>InitialProd</th>
-                <th>Method</th>
-                <th>ProdQual</th>
-                <th>ChokeSize</th>
-                <th>ChokeQual</th>
-                <th>ProdZone</th>
-                <th>GOR</th>
-                <th>GORqual</th>
-                <th>FTP</th>
-                <th>FTPmin</th>
-                <th>FTPmax</th>
-                <th>FTPunits</th>
-                <th>SITP</th>
-                <th>SITPunits</th>
-                <th>SICP</th>
-                <th>SICPunits</th>
-                <th>CsgPress</th>
-                <th>CsgPressUn</th>
-                <th>CsgPrsQual</th>
-                <th>BOPD</th>
-                <th>BOPDqual</th>
-                <th>TraceOil</th>
-                <th>MCFGD</th>
-                <th>MillMCFGD</th>
-                <th>MCFGDqual</th>
-                <th>BWD</th>
-                <th>BWDqual</th>
-                <th>APIoilGrav</th>
-                <th>OilGravqu</th>
-                <th>GasGrav</th>
-                <th>GasGravqu</th>
-                <th>IP</th>
-                <th>GasBTU</th>
-                <th>MiscInfo</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+<!--<div class="row">-->
+<!--    <table class="display compact">-->
+<!--        <tr>-->
+<!--            <td>Well ID</td>-->
+<!--            <td id="well_id">{{ well_id }}</td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>API</td>-->
+<!--            <td id="api"></td>-->
+<!--        </tr>-->
+<!--    </table>-->
 
-<div class="row">
+<!--</div>-->
+
+
+<!--<div class="row">-->
+<!--    <H3>Records</H3>-->
+<!--    <table id="records" class="display compact">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>WellDataID</th>-->
+<!--            <th>RecordSetID</th>-->
+<!--            <th>WellName</th>-->
+<!--            <th>ActionDate</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+
+<!--</div>-->
+
+<!--<div class="row">-->
 <!--    <div class="col-6">-->
-<!--        <h3>Perforations</h3>-->
-<!--        <table id="perforation"></table>-->
+<!--        <H3>Bore</H3>-->
+<!--        <table id="bore" class="display compact">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>RecordSetID</th>-->
+<!--                <th>FromDepth</th>-->
+<!--                <th>ToDepth</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
 <!--    </div>-->
-    <div class="col-12">
-        <h3>Petro</h3>
-        <table id="petro">
-            <thead>
-                <tr>
-                    <th>PrdIntvlID</th>
-                    <th>ProdFm</th>
-                    <th>Field_Pool</th>
-                    <th>PrdFrmDpth</th>
-                    <th>PrdToDepth</th>
-                    <th>Int_Notes</th>
-                    <th>OCD_PoolID</th>
-                </tr>
-            </thead>
+<!--    <div class="col-6">-->
+<!--        <h3>LogData</h3>-->
+<!--        <table id="logdata">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th>LogClass</th>-->
+<!--                    <th>LogType</th>-->
+<!--                    <th>LogTitle</th>-->
+<!--                    <th>LogDate</th>-->
+<!--                    <th>FromDepth</th>-->
+<!--                    <th>ToDepth</th>-->
+<!--                    <th>Hotlink</th>-->
+<!--                    <th>FileNo</th>-->
+<!--                    <th>FileLoc</th>-->
+<!--                    <th>Int_Notes</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
 
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <h3>Tubing</h3>
-        <table id="tubing">
-            <thead>
-            <tr>
-                <th>Comments</th>
-                <th>PackerSet</th>
-                <th>TubingDepth</th>
-                <th>TubingSize</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="col-6">
-        <h3>Treatments</h3>
-        <table id="treatment">
-            <thead>
-            <tr>
-                <th>Treatment</th>
-                <th>FromDepth</th>
-                <th>ToDepth</th>
-                <th>Comments</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-6">
-        <H3>Drillers</H3>
-        <table id="drillers" class="display compact">
-            <thead>
-            <tr>
-                <th>RecordSetID</th>
-                <th>WorkType</th>
-                <th>Information</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="col-6">
-        <H3>Liner</H3>
-        <table id="liner" class="display compact">
-            <thead>
-            <tr>
-                <th>RecordSetID</th>
-                <th>FromDepth</th>
-                <th>ToDepth</th>
-                <th>Sax</th>
-                <th>LinerSize</th>
-                <th>Comments</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
+<!--<div class="row">-->
+<!--    <H3>Casing</H3>-->
+<!--    <table id="casing" class="display compact">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>RecordSetID</th>-->
+<!--            <th>Depth</th>-->
+<!--            <th>DepthType</th>-->
+<!--            <th>CasingType</th>-->
+<!--            <th>CasDiaType</th>-->
+<!--            <th>CasingMtrl</th>-->
+<!--            <th>CasingDiam</th>-->
+<!--            <th>CasDiaUnit</th>-->
+<!--            <th>CasDpthDrl</th>-->
+<!--            <th>CasDpthLog</th>-->
+<!--            <th>CasingWgt</th>-->
+<!--            <th>CasngWgtUn</th>-->
+<!--            <th>CasngThick</th>-->
+<!--            <th>CasngThkUn</th>-->
+<!--            <th>CasingLen</th>-->
+<!--            <th>CasLenUnit</th>-->
+<!--            <th>Sax</th>-->
+<!--            <th>CmntRcd</th>-->
+<!--            <th>Comments</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--</div>-->
 
-</div>
-<div class="row">
-    <H3>History</H3>
-    <table id="history" class="display compact">
-        <thead>
-        <tr>
-            <th>RecordSetID</th>
-            <th>ActionClass</th>
-            <th>WorkType</th>
-            <th>ActionDate</th>
-            <th>SpudDate</th>
-            <th>Commodity</th>
-            <th>PlugBack</th>
-            <th>BridgePlug</th>
-            <th>TotalDepth</th>
-            <th>Results</th>
-            <th>LeaseID</th>
-            <th>Operator</th>
-            <th>Contractor</th>
-            <th>Driller</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+<!--<div class="row">-->
+<!--    <div>-->
+<!--        <h3>Samples</h3>-->
+<!--        <table id="samples">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th>SmpSetName</th>-->
+<!--                    <th>SamplClass</th>-->
+<!--                    <th>SampleType</th>-->
+<!--                    <th>SampleFm</th>-->
+<!--                    <th>SampleLoc</th>-->
+<!--                    <th>SampleDate</th>-->
+<!--                    <th>From_Depth</th>-->
+<!--                    <th>To_Depth</th>-->
+<!--                    <th>SmpDpUnt</th>-->
+<!--                    <th>From_TVD</th>-->
+<!--                    <th>To_TVD</th>-->
+<!--                    <th>From_Elev</th>-->
+<!--                    <th>To_Elev</th>-->
+<!--                    <th>Porosity</th>-->
+<!--                    <th>Permeablty</th>-->
+<!--                    <th>Density</th>-->
+<!--                    <th>DST_Tests</th>-->
+<!--                    <th>ThinSect</th>-->
+<!--                    <th>Geochron</th>-->
+<!--                    <th>Geochem</th>-->
+<!--                    <th>Geothermal</th>-->
+<!--                    <th>WholeRock</th>-->
+<!--                    <th>Paleontlgy</th>-->
+<!--                    <th>EnteredBy</th>-->
+<!--                    <th>EntryDate</th>-->
+<!--                    <th>Notes</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="row">
-    <H3>LithLog</H3>
-    <table id="lithlog" class="display compact">
-        <thead>
-        <tr>
-            <th>GeoID</th>
-            <th>FromDepth</th>
-            <th>Name</th>
-            <th>ToDepth</th>
-            <th>LithClass</th>
-            <th>LithType</th>
-            <th>IgneousCmp</th>
-            <th>MMfacies</th>
-            <th>Mineralogy</th>
-            <th>PrimLith</th>
-            <th>SecondLith</th>
-            <th>ShortDesc</th>
-            <th>UnitDesc</th>
-            <th>Texture</th>
-            <th>Color</th>
-            <th>GrainSize</th>
-            <th>Sorting</th>
-            <th>Cemntation</th>
-            <th>Induration</th>
-            <th>Bedding</th>
-            <th>BedThkness</th>
-            <th>ThickUnits</th>
-            <th>Protolith</th>
-            <th>Comments</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+<!--<div class="row">-->
+<!--    <h3>Production</h3>-->
+<!--    <table id="production">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>InitialProd</th>-->
+<!--                <th>Method</th>-->
+<!--                <th>ProdQual</th>-->
+<!--                <th>ChokeSize</th>-->
+<!--                <th>ChokeQual</th>-->
+<!--                <th>ProdZone</th>-->
+<!--                <th>GOR</th>-->
+<!--                <th>GORqual</th>-->
+<!--                <th>FTP</th>-->
+<!--                <th>FTPmin</th>-->
+<!--                <th>FTPmax</th>-->
+<!--                <th>FTPunits</th>-->
+<!--                <th>SITP</th>-->
+<!--                <th>SITPunits</th>-->
+<!--                <th>SICP</th>-->
+<!--                <th>SICPunits</th>-->
+<!--                <th>CsgPress</th>-->
+<!--                <th>CsgPressUn</th>-->
+<!--                <th>CsgPrsQual</th>-->
+<!--                <th>BOPD</th>-->
+<!--                <th>BOPDqual</th>-->
+<!--                <th>TraceOil</th>-->
+<!--                <th>MCFGD</th>-->
+<!--                <th>MillMCFGD</th>-->
+<!--                <th>MCFGDqual</th>-->
+<!--                <th>BWD</th>-->
+<!--                <th>BWDqual</th>-->
+<!--                <th>APIoilGrav</th>-->
+<!--                <th>OilGravqu</th>-->
+<!--                <th>GasGrav</th>-->
+<!--                <th>GasGravqu</th>-->
+<!--                <th>IP</th>-->
+<!--                <th>GasBTU</th>-->
+<!--                <th>MiscInfo</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--</div>-->
 
-<div class="row">
-    <h3>LithStrat</h3>
-    <table id="lithstrat">
-        <thead>
-            <tr>
-                <th>LithClass</th>
-                <th>UnitBasis</th>
-                <th>UnitName</th>
-                <th>GeoID</th>
-                <th>WithinUnit</th>
-                <th>Top_Qual</th>
-                <th>Depth2Top</th>
-                <th>Top_TVD</th>
-                <th>Elev_Top</th>
-                <th>Botm_Qual</th>
-                <th>Depth2Botm</th>
-                <th>Bottom_TVD</th>
-                <th>Elev_Bot</th>
-                <th>DpthMethod</th>
-                <th>PickConfid</th>
-                <th>Absent</th>
-                <th>Overturned</th>
-                <th>Duplicated</th>
-                <th>Exclude</th>
-                <th>CheckPick</th>
-                <th>Int_Notes</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+<!--<div class="row">-->
+<!--&lt;!&ndash;    <div class="col-6">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h3>Perforations</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;        <table id="perforation"></table>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--    <div class="col-12">-->
+<!--        <h3>Petro</h3>-->
+<!--        <table id="petro">-->
+<!--            <thead>-->
+<!--                <tr>-->
+<!--                    <th>PrdIntvlID</th>-->
+<!--                    <th>ProdFm</th>-->
+<!--                    <th>Field_Pool</th>-->
+<!--                    <th>PrdFrmDpth</th>-->
+<!--                    <th>PrdToDepth</th>-->
+<!--                    <th>Int_Notes</th>-->
+<!--                    <th>OCD_PoolID</th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--    <div class="col-6">-->
+<!--        <h3>Tubing</h3>-->
+<!--        <table id="tubing">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Comments</th>-->
+<!--                <th>PackerSet</th>-->
+<!--                <th>TubingDepth</th>-->
+<!--                <th>TubingSize</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <div class="col-6">-->
+<!--        <h3>Treatments</h3>-->
+<!--        <table id="treatment">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Treatment</th>-->
+<!--                <th>FromDepth</th>-->
+<!--                <th>ToDepth</th>-->
+<!--                <th>Comments</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--    <div class="col-6">-->
+<!--        <H3>Drillers</H3>-->
+<!--        <table id="drillers" class="display compact">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>RecordSetID</th>-->
+<!--                <th>WorkType</th>-->
+<!--                <th>Information</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <div class="col-6">-->
+<!--        <H3>Liner</H3>-->
+<!--        <table id="liner" class="display compact">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>RecordSetID</th>-->
+<!--                <th>FromDepth</th>-->
+<!--                <th>ToDepth</th>-->
+<!--                <th>Sax</th>-->
+<!--                <th>LinerSize</th>-->
+<!--                <th>Comments</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--        </table>-->
+<!--    </div>-->
+
+<!--</div>-->
+<!--<div class="row">-->
+<!--    <H3>History</H3>-->
+<!--    <table id="history" class="display compact">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>RecordSetID</th>-->
+<!--            <th>ActionClass</th>-->
+<!--            <th>WorkType</th>-->
+<!--            <th>ActionDate</th>-->
+<!--            <th>SpudDate</th>-->
+<!--            <th>Commodity</th>-->
+<!--            <th>PlugBack</th>-->
+<!--            <th>BridgePlug</th>-->
+<!--            <th>TotalDepth</th>-->
+<!--            <th>Results</th>-->
+<!--            <th>LeaseID</th>-->
+<!--            <th>Operator</th>-->
+<!--            <th>Contractor</th>-->
+<!--            <th>Driller</th>-->
+<!--            <th>Status</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div class="row">-->
+<!--    <H3>LithLog</H3>-->
+<!--    <table id="lithlog" class="display compact">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>GeoID</th>-->
+<!--            <th>FromDepth</th>-->
+<!--            <th>Name</th>-->
+<!--            <th>ToDepth</th>-->
+<!--            <th>LithClass</th>-->
+<!--            <th>LithType</th>-->
+<!--            <th>IgneousCmp</th>-->
+<!--            <th>MMfacies</th>-->
+<!--            <th>Mineralogy</th>-->
+<!--            <th>PrimLith</th>-->
+<!--            <th>SecondLith</th>-->
+<!--            <th>ShortDesc</th>-->
+<!--            <th>UnitDesc</th>-->
+<!--            <th>Texture</th>-->
+<!--            <th>Color</th>-->
+<!--            <th>GrainSize</th>-->
+<!--            <th>Sorting</th>-->
+<!--            <th>Cemntation</th>-->
+<!--            <th>Induration</th>-->
+<!--            <th>Bedding</th>-->
+<!--            <th>BedThkness</th>-->
+<!--            <th>ThickUnits</th>-->
+<!--            <th>Protolith</th>-->
+<!--            <th>Comments</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div class="row">-->
+<!--    <h3>LithStrat</h3>-->
+<!--    <table id="lithstrat">-->
+<!--        <thead>-->
+<!--            <tr>-->
+<!--                <th>LithClass</th>-->
+<!--                <th>UnitBasis</th>-->
+<!--                <th>UnitName</th>-->
+<!--                <th>GeoID</th>-->
+<!--                <th>WithinUnit</th>-->
+<!--                <th>Top_Qual</th>-->
+<!--                <th>Depth2Top</th>-->
+<!--                <th>Top_TVD</th>-->
+<!--                <th>Elev_Top</th>-->
+<!--                <th>Botm_Qual</th>-->
+<!--                <th>Depth2Botm</th>-->
+<!--                <th>Bottom_TVD</th>-->
+<!--                <th>Elev_Bot</th>-->
+<!--                <th>DpthMethod</th>-->
+<!--                <th>PickConfid</th>-->
+<!--                <th>Absent</th>-->
+<!--                <th>Overturned</th>-->
+<!--                <th>Duplicated</th>-->
+<!--                <th>Exclude</th>-->
+<!--                <th>CheckPick</th>-->
+<!--                <th>Int_Notes</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--</div>-->
 
 {% endblock %}

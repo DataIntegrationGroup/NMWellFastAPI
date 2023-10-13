@@ -74,6 +74,11 @@ function initMap(center, zoom, dataurl){
     });
     map.on('click', 'wells', (e) => {
         const pointid = e.features[0].properties.name
+
+
+        // const graph = {"data": [{"type": "scatter", "x": [1,2,3], "y": [1,2,3]}],}
+        // Plotly.plot('graph', graph, {});
+        // $('#graphContainer').show()
         window.open('/well/detail/' + pointid, '_blank')
     });
     map.on('style.load',  (s) => {
