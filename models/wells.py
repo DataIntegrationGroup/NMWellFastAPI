@@ -385,8 +385,10 @@ class BHTdata(Base):
     Depth = Column(Float)
 
 
-class Intervals(Base, ):
-    __tablename__ = 'WS_Interval'
+class Intervals(
+    Base,
+):
+    __tablename__ = "WS_Interval"
     IntrvlGUID = Column(GUID, primary_key=True, index=True)
     SamplSetID = Column(GUID, ForeignKey("Well_Samples.SamplSetID"))
     From_Depth = Column(Float)
@@ -397,20 +399,20 @@ class Intervals(Base, ):
 
 
 class ThermalConductivity(Base, GlobalIDMixin):
-    __tablename__ = 'GT_Conductvty'
+    __tablename__ = "GT_Conductvty"
     IntrvlGUID = Column(GUID, ForeignKey("WS_Interval.IntrvlGUID"))
     Cnductvity = Column(Float)
 
 
 class HeatFlow(Base, GlobalIDMixin):
-    __tablename__ = 'GT_HeatFlow'
+    __tablename__ = "GT_HeatFlow"
     IntrvlGUID = Column(GUID, ForeignKey("WS_Interval.IntrvlGUID"))
     Ka = Column(Float)
     Kpr = Column(Float)
 
 
 class TempVsDepth(Base, GlobalIDMixin):
-    __tablename__ = 'GT_TempDepth'
+    __tablename__ = "GT_TempDepth"
     Depth = Column(Float)
     Temp = Column(Float)
     SamplSetID = Column(GUID, ForeignKey("Well_Samples.SamplSetID"))
@@ -441,5 +443,6 @@ class Tubing(Base, GlobalIDMixin, RecordSetMixin):
     PackerSet = Column(Integer)
     TubingDepth = Column(Float)
     TubingSize = Column(Float)
+
 
 # ============= EOF =============================================

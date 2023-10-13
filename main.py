@@ -45,9 +45,9 @@ def dump_figure(fig):
 
 def get_intervals(well):
     for ri in well.records:
-        print('record', ri, ri.RecrdSetID)
+        print("record", ri, ri.RecrdSetID)
         for si in ri.samples:
-            print('sample', si, si.SamplSetID)
+            print("sample", si, si.SamplSetID)
             return si.intervals
             # for interval in si.intervals:
             #     print(interval, interval.From_Depth, interval.To_Depth,
@@ -58,17 +58,14 @@ def get_bht(well):
     for ri in well.records:
         for si in ri.samples:
             for bht in si.bhtheaders:
-
-                d =  {'diam': bht.BoreDia,
-                      'bht': '',
-                      'depth': ''}
+                d = {"diam": bht.BoreDia, "bht": "", "depth": ""}
                 if bht.data:
-                    d['bht'] = bht.data[0].BHT
-                    d['depth'] = bht.data[0].Depth
+                    d["bht"] = bht.data[0].BHT
+                    d["depth"] = bht.data[0].Depth
 
                 return d
     else:
-        return {'bht': '', 'diam': '', 'depth': ''}
+        return {"bht": "", "diam": "", "depth": ""}
 
 
 def get_heatflows(intervals):
@@ -115,7 +112,7 @@ def well_detail(request: Request, well_id: int, db: Session = Depends(get_db)):
     well = get_well_db(well_id, db)
     y, x = get_tempvsdepth(well)
 
-    trace = go.Scatter(x=x, y=y, mode='lines')
+    trace = go.Scatter(x=x, y=y, mode="lines")
     fig.add_trace(trace)
     fig.update_layout(
         margin={"l": 20, "r": 10, "t": 35, "b": 10},
@@ -138,27 +135,25 @@ def well_detail(request: Request, well_id: int, db: Session = Depends(get_db)):
     intervals = get_intervals(well)
     if intervals:
         depths, t = get_thermal_conductivity(intervals)
-        trace = go.Scatter(x=t, y=depths, mode='lines')
+        trace = go.Scatter(x=t, y=depths, mode="lines")
         tc_fig.add_trace(trace)
 
         depths, hs = get_heatflows(intervals)
-        trace = go.Scatter(x=hs, y=depths, mode='lines')
+        trace = go.Scatter(x=hs, y=depths, mode="lines")
         hf_fig.add_trace(trace)
 
-
     bht = get_bht(well)
-    print('asdf', bht)
+    print("asdf", bht)
     return templates.TemplateResponse(
         "well_detail_view.html",
         {
             "request": request,
             "well_id": well_id,
-            'tempvsdepth': dump_figure(fig),
+            "tempvsdepth": dump_figure(fig),
             "thermalconductivity": dump_figure(tc_fig),
-            "api": well.header.API or '',
+            "api": well.header.API or "",
             "bht": bht,
             "heatflow": dump_figure(hf_fig),
-
             # "center": {"lat": 34.5, "lon": -106.0},
             # "zoom": 7,
             # "data_url": "/locations/fc",
