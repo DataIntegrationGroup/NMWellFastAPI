@@ -23,8 +23,8 @@ router = APIRouter(prefix="/api/v1/injection", tags=["injection"])
 
 @router.get("/{api_id}")
 def get_injection(api_id, db: Session = Depends(get_db)):
-    stmt = '''select wellType, wellname, wellstatus, wellcounty from tbl_OCD_WellInjections_InjPressuresByDatePeriod_Life
-            where API_WellID_nodash=:api_id'''
+    stmt = """select wellType, wellname, wellstatus, wellcounty from tbl_OCD_WellInjections_InjPressuresByDatePeriod_Life
+            where API_WellID_nodash=:api_id"""
     results = db.execute(statement=stmt, params=dict(api_id=api_id))
     # print(results)
     r = results.fetchall()

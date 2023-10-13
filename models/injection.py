@@ -30,5 +30,4 @@ from sqlalchemy.orm import relationship, declared_attr
 from database import Base, engine
 
 
-
 # ============= EOF =============================================
