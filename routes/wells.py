@@ -26,7 +26,16 @@ router = APIRouter(prefix="/api/v1/wells", tags=["wells"])
 @router.get("/")
 def get_wells(f: str = None, db: Session = Depends(get_db)):
     # rows = db.query(wells.Well).filter(wells.Well.API.is_not(None)).limit(10).all()
-    rows = db.query(wells.Location, wells.Header).join(wells.Header).all()
+    q = db.query(wells.Location, wells.Header)
+    q = q.join(wells.Header)
+    # q = q.join(wells.Records)
+    # q = q.join(wells.Samples)
+    # q = q.join(wells.TempVsDepth)
+    q = q.filter(wells.Header.API.isnot(None))
+
+
+    rows = q.all()
+    # rows = db.query(wells.Location, wells.Header).join(wells.Header).all()
 
     # rows = db.query(wells.Well).all()
 

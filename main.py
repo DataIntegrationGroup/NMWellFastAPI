@@ -96,8 +96,7 @@ def get_tempvsdepth(well):
     ds = []
     for ri in well.records:
         for si in ri.samples:
-            ds.extend([(td.Depth, td.Temp) for td in si.tempvsdepths])
-
+            ds.extend([(td.Depth, td.Temp) for td in si.tempvsdepths if td.Temp is not None and td.Depth is not None])
             break
     if ds:
         ds = sorted(ds, key=lambda x: x[0])
@@ -143,7 +142,7 @@ def well_detail(request: Request, well_id: int, db: Session = Depends(get_db)):
         hf_fig.add_trace(trace)
 
     bht = get_bht(well)
-    print("asdf", bht)
+
     return templates.TemplateResponse(
         "well_detail_view.html",
         {
