@@ -33,7 +33,6 @@ def get_wells(f: str = None, db: Session = Depends(get_db)):
     # q = q.join(wells.TempVsDepth)
     q = q.filter(wells.Header.API.isnot(None))
 
-
     rows = q.all()
     # rows = db.query(wells.Location, wells.Header).join(wells.Header).all()
 

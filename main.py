@@ -96,7 +96,13 @@ def get_tempvsdepth(well):
     ds = []
     for ri in well.records:
         for si in ri.samples:
-            ds.extend([(td.Depth, td.Temp) for td in si.tempvsdepths if td.Temp is not None and td.Depth is not None])
+            ds.extend(
+                [
+                    (td.Depth, td.Temp)
+                    for td in si.tempvsdepths
+                    if td.Temp is not None and td.Depth is not None
+                ]
+            )
             break
     if ds:
         ds = sorted(ds, key=lambda x: x[0])
